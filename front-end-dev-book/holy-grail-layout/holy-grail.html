@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy Grail Layout</title>
+
+    <style>
+        :root {
+            --space: 1.5em;
+            --space-lg: 2em;
+            --bg-color: hsl(150, 45%, 50%);
+        }
+
+        .holyGrail {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .holyGrail-header,
+        .holyGrail-footer {
+            flex: none;
+        }
+
+        .holyGrail-body {
+            display: flex;
+            flex: 1 0 auto;
+            flex-direction: column;
+            padding: var(--space);
+        }
+
+        .holyGrail,
+        .holyGrail-body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .holyGrail-content {
+            margin-top: var(--space);
+        }
+
+        .holyGrail-nav,
+        .holyGrail-ads {
+            padding: 1em;
+            border-radius: 3px;
+            background-color: antiquewhite;
+        }
+
+        .holyGrail-nav {
+            order: -1;
+        }
+
+        @media (min-width: 768px) {
+            .holyGrail-body {
+                flex-direction: row;
+            }
+            .holyGrail-content {
+                flex: 1;
+                padding: 0 var(--space-lg);
+                margin: 0;
+            }
+            .holyGrail-nav,
+            .holyGrail-ads {
+                flex: 0 0 12em;
+            }
+        }
+    </style>
+</head>
+<body class="holyGrail">
+    <header class="holyGrail-header">header</header>
+    <div class="holyGrail-body">
+        <main class="holyGrail-content">content</main>
+        <nav class="holyGrail-nav">nav</nav>
+        <aside class="holyGrail-ads">ads</aside>
+    </div>
+    <footer class="holyGrail-footer">Footer</footer>
+</body>
+</html>
