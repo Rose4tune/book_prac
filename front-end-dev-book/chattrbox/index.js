@@ -4,8 +4,10 @@ var extract = require('./extract'); // extract 모듈 불러옴
 
 // errer 발생 시 처리 함수
 var handleError = function (err, res) {
+  fs.readFile('app/error.html', function (err, data) {
+    res.end(data);
+  })
   res.writeHead(404);
-  res.end();
 }
 
 var server = http.createServer(function(req, res) {
