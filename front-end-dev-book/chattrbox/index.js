@@ -20,6 +20,9 @@ var server = http.createServer(function(req, res) {
       handleError(err, res);
       return;
     } else {
+      // MIME타입 명시하여 처리
+      // HTML을 위한 MIME타입 (npm install mime 으로 모듈설치 이용 가능)
+      res.setHeader('content-Type', 'text/html');
       res.end(data);
     }
   })
