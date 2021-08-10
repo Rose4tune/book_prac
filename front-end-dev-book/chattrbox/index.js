@@ -2,6 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var extract = require('./extract'); // extract 모듈 불러옴
 var handleError = require('./error'); // error 모듈 불러옴
+var wss = require('./websockets-server');
 
 var server = http.createServer(function(req, res) {
   console.log('Responding to a request');
