@@ -1,14 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var extract = require('./extract'); // extract 모듈 불러옴
-
-// errer 발생 시 처리 함수
-var handleError = function (err, res) {
-  fs.readFile('app/error.html', function (err, data) {
-    res.end(data);
-  })
-  res.writeHead(404);
-}
+var handleError = require('./error'); // error 모듈 불러옴
 
 var server = http.createServer(function(req, res) {
   console.log('Responding to a request');
