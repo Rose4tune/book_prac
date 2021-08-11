@@ -13,7 +13,10 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
-    "nodemon": "^2.0.12"
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "nodemon": "^2.0.12",
+    "watchify": "^4.0.0"
   },
   "dependencies": {
     "mime": "^2.5.2",
