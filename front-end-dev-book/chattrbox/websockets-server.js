@@ -17,7 +17,7 @@ ws.on('connection', function (socket) {
     socket.send(msg);
   });
 
-  // Echo 기능 추가
+  // Echo 기능 추가 
   socket.on('message', function (data) {
     console.log('eassage received : ' + data);
     // 새로운 메시지를 배열에 추가
