@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "babel app/scripts/src -w -d app/scripts/dist"
+    "build": "webpack -w"
   },
   "keywords": [],
   "author": "",
@@ -14,10 +14,15 @@
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/preset-env": "^7.15.0",
-    "nodemon": "^2.0.12"
+    "babel-loader": "^8.2.2",
+    "nodemon": "^2.0.12",
+    "webpack": "^5.50.0",
+    "webpack-cli": "^4.7.2"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "ws": "^8.1.0"
   }
 }
