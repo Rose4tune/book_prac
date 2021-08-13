@@ -10,8 +10,10 @@ class ChatApp {
 
     socket.init('ws://localhost:3001');
     socket.registerOpenHandler(() => {
-      let message = new ChatMessage({ message: 'POW!'});
-      socket.sendMessage(message.serialize());
+      this.chatForm.init((data) => {
+        let message = new ChatMessage(message:data);
+        socket.sendMessage(message.serialize());
+      });
     });
     socket.registerMessageHandler((data) => {
       console.log(data);
