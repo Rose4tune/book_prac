@@ -19,7 +19,7 @@ ws.on('connection', function (socket) {
 
   // Echo 기능 추가
   socket.on('message', function (data) {
-    console.log('eassage received : ' + data);
+    console.log('message received : ' + data);
     // 새로운 메시지를 배열에 추가
     messages.push(data);
     // clients 속성을 통해 파악되는 연결(반복해서 접근 가능한 배열)을 이용

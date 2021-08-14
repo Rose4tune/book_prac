@@ -24,6 +24,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var FORM_SELECTOR = '[data-chat="chat-form"]';
 var INPUT_SELECTOR = '[data-chat="message-input"]';
+var LIST_SELECTOR = '[data-chat="message-list"]';
 
 var ChatApp = function ChatApp() {
   var _this = this;
@@ -31,6 +32,7 @@ var ChatApp = function ChatApp() {
   _classCallCheck(this, ChatApp);
 
   this.chatForm = new _dom__WEBPACK_IMPORTED_MODULE_1__.ChatForm(FORM_SELECTOR, INPUT_SELECTOR);
+  this.chatList = new _dom__WEBPACK_IMPORTED_MODULE_1__.ChatList(LIST_SELECTOR, 'blackWidow');
   _ws_client__WEBPACK_IMPORTED_MODULE_0__.default.init('ws://localhost:3001');
   _ws_client__WEBPACK_IMPORTED_MODULE_0__.default.registerOpenHandler(function () {
     _this.chatForm.init(function (data) {
@@ -38,18 +40,28 @@ var ChatApp = function ChatApp() {
         message: data
       });
       _ws_client__WEBPACK_IMPORTED_MODULE_0__.default.sendMessage(message.serialize());
+      console.log(message);
+      console.log(message.serialize());
     });
   });
   _ws_client__WEBPACK_IMPORTED_MODULE_0__.default.registerMessageHandler(function (data) {
     console.log(data);
+    var message = new ChatMessage(data);
+
+    _this.chatList.drawMessage(message.serialize());
+
+    console.log(message);
+    console.log(message.serialize());
   });
 };
+
+;
 
 var ChatMessage = /*#__PURE__*/function () {
   function ChatMessage(_ref) {
     var m = _ref.message,
         _ref$user = _ref.user,
-        u = _ref$user === void 0 ? 'batman' : _ref$user,
+        u = _ref$user === void 0 ? 'Marvel' : _ref$user,
         _ref$timestamp = _ref.timestamp,
         t = _ref$timestamp === void 0 ? new Date().getTime() : _ref$timestamp;
 
@@ -74,6 +86,7 @@ var ChatMessage = /*#__PURE__*/function () {
   return ChatMessage;
 }();
 
+;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatApp);
 
 /***/ }),
@@ -129,6 +142,7 @@ var ChatForm = /*#__PURE__*/function () {
 
   return ChatForm;
 }();
+;
 var ChatList = /*#__PURE__*/function () {
   function ChatList(listSel, username) {
     _classCallCheck(this, ChatList);
@@ -151,6 +165,7 @@ var ChatList = /*#__PURE__*/function () {
         $messageRow.addClass('me');
       }
 
+      ;
       var $message = jquery__WEBPACK_IMPORTED_MODULE_0___default()('<p>');
       $message.append(jquery__WEBPACK_IMPORTED_MODULE_0___default()('<span>', {
         'class': 'message-username',
@@ -173,6 +188,7 @@ var ChatList = /*#__PURE__*/function () {
 
   return ChatList;
 }();
+;
 
 /***/ }),
 
@@ -188,11 +204,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 var socket;
+console.log('socket : ' + socket);
 
 function init(url) {
   socket = new WebSocket(url);
   console.log('connecting...');
 }
+
+;
 
 function registerOpenHandler(handlerFunction) {
   socket.onopen = function () {
@@ -201,18 +220,28 @@ function registerOpenHandler(handlerFunction) {
   };
 }
 
+;
+
 function registerMessageHandler(handlerFunction) {
   socket.onmessage = function (e) {
-    console.log('message', e.data);
-    var data = JSON.parse(e.data);
+    console.log('message', e); // let data = JSON.parse(e.data);
+
+    var data = e.data;
     handlerFunction(data);
   };
+
+  console.log(handlerFunction);
 }
+
+;
 
 function sendMessage(payload) {
-  socket.send(JSON.stringify(payload));
+  console.log(payload); // console.log(JSON.stringify(payload));
+
+  socket.send(payload);
 }
 
+;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   init: init,
   registerOpenHandler: registerOpenHandler,
