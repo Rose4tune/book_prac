@@ -17,7 +17,7 @@ app.get('/', function(request, response) {
     if(err) {
       response.send('에러....ㅠㅠ');
     } else {
-      response.writeHead(200, {'Content-Type':'texs/html'});
+      response.writeHead(200, {'Content-Type':'text/html'});
       response.write(data);
       response.end();
     }
