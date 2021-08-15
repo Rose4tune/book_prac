@@ -25,17 +25,18 @@ app.get('/', function(request, response) {
   });
 });
 
-// 소켓에서 on 이벤트 받으면 콜백 실행
+// 소켓에서 connection 이벤트 받으면 콜백 실행
 // sockets : 접속되는 모든 소켓들
 // socket : 접속과 동시에 콜백함수로 전달되는 소켓
 io.sockets.on('connection', function(socket) {
   console.log('유저 접속 됨');
 
+  // send 이벤트 (정의 이벤트)
   socket.on('send', function(data) {
     console.log('전달된 메시지 : ' + data.msg);
   });
 
-// disconnect : socket.io의 기본 이벤트. 소켓과 접속이 끊어지면 자동 실행 됨.
+  // disconnect (socket.io의 기본 이벤트) : 소켓과 접속이 끊어지면 자동 실행 됨.
   socket.on('disconnect', function() {
     console.log('접속 종료');
   });
