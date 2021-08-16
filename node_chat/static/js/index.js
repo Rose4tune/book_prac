@@ -12,4 +12,4 @@ function send() {
   console.log(message);
   document.getElementById('test').value = '';
   socket.emit('send', {msg: message});
-}
+};
