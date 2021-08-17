@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import $ from 'jquery';
 
 export class ChatForm {
@@ -57,3 +58,5 @@ export class ChatList {
     $messageRow.get(0).scrollIntoView();
   };
 };
+=======
+>>>>>>> parent of ac35830 (dom 모듈 ChatForm 생성)
