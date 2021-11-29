@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Admin System</title>
+  <link rel="stylesheet" href="src/styles/style.css">
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header id="header">
+      <h1>직원 관리 프로그램</h1>
+    </header>
+
+    <main>
+      <aside class="aside">
+        <nav id="nav">
+          <ul id="nav-list">
+            <li class="nav-item" data-tab="s1"><a href="#none">직원 등록</a></li>
+            <li class="nav-item" data-tab="s2"><a href="#none">직원 리스트</a></li>
+            <li class="nav-item" data-tab="s3"><a href="#none">메일 발송 설정</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="container">
+        <section id="s1" class="content">
+          <h2>직원 정보 등록하기</h2>
+          <form id="singUp" action="#s2">
+            <label for="empNum" class="empNum">직원 번호</label>
+            <input type="number" id="empNum" class="info" maxLength="3" oninput="maxNum(this)">
+            <label for="empPosition" class="empPosition">직급</label>
+            <input type="text" id="empPosition" class="info">
+            <label for="empName" class="empName">이름</label>
+            <input type="text" id="empName" class="info">
+            <label for="empPhone" class="empPhone">전화번호</label>
+            <input type="text" id="empPhone" class="info" placeholder="000-0000-0000 형식으로 입력해주세요">
+            <label for="empEmail" class="empEmail">이메일</label>
+            <input type="text" id="empEmail" class="info" placeholder="aaa@aaaa.aaa 형식으로 입력해주세요">
+            <button type="submit" id="checkBtn" class="btn" onclick="nameCheck()">저장하기</button>
+          </form>
+        </section>
+
+        <section id="s2" class="content">
+          <h2>직원 리스트</h2>
+          <div id="listBtnMenu">
+            <button type="button" class="btn" id="delRowBtn">삭제</button>
+            <button type="button" class="btn">리스트 다운로드</button>
+            <div id="searchBox">
+              <select name="filter" id="filter">
+                <option value="empNum">직원 번호</option>
+                <option value="empPsition">직급</option>
+                <option value="empName">이름</option>
+                <option value="empPhone">전화번호</option>
+                <option value="empEmail">이메일</option>
+              </select>
+              <input type="text" id="search" placeholder="검색하기">
+              <label for="search" class="btn">Search</label>
+            </div>
+          </div>
+          <div id="empList">
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    <input type="checkbox" name="empListChk" id="chkAll">
+                  </th>
+                  <th>직원번호</th>
+                  <th>직급</th>
+                  <th>이름</th>
+                  <th>전화번호</th>
+                  <th>이메일</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="listContent"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="s3" class="content" style="background: lightgray;">
+          3
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="nameCheckModal">
+    <p>저장 하시겠습니까?</p>
+    <button type="button" id="addRowBtn" class="btn">예</button>
+    <button type="button" id="closeBtn" class="btn">아니요</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+  <script src="src/scripts/main.js"></script>
+  <script>
+    
+  function maxNum(e){
+    if(e.value.length > e.maxLength){
+      e.value = e.value.slice(0, e.maxLength);
+    }
+  }
+
+  function nameCheck(){
+    const empNum = document.getElementById('empNum').value;
+    const empPosition = document.getElementById('empPosition').value;
+    const empName = document.getElementById('empName').value;
+    const empPhone = document.getElementById('empPhone').value;
+    const empEmail = document.getElementById('empEmail').value;
+
+    const checkModal = document.getElementById('nameCheckModal');
+
+    if(empNum == false){
+      $(".empNum").addClass('alert');
+    } else {
+      $(".empNum").removeClass('alert');
+    }
+    if(empPosition == false){
+      $(".empPosition").addClass('alert');
+    } else {
+      $(".empPosition").removeClass('alert');
+    }
+    if(empName == false){
+      $(".empName").addClass('alert');
+    } else {
+      $(".empName").removeClass('alert');
+    }
+    if(empPhone == false){
+      $(".empPhone").addClass('alert');
+    } else {
+      $(".empPhone").removeClass('alert');
+    }
+    if(empEmail == false){
+      $(".empEmail").addClass('alert');
+    } else {
+      $(".empEmail").removeClass('alert');
+      checkModal.style.display = 'block';
+    }
+  }
+
+  </script>
+</body>
+
+</html>
