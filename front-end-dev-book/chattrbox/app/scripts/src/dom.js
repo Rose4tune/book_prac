@@ -18,7 +18,6 @@ export class ChatForm {
   };
 };
 
-
 export class ChatList {
   constructor(listSel, username) {
     this.$list = $(listSel);
