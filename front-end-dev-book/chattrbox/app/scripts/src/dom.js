@@ -56,4 +56,4 @@ export class ChatList {
     $(this.$list).append($messageRow);
     $messageRow.get(0).scrollIntoView();
   };
-};\
+};
