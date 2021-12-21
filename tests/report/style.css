@@ -147,7 +147,7 @@ main{
 /* Graph Box */
 .graph {
   padding: 3rem 0;
-  background: #efefef;
+  /* background: #efefef; */
   text-align: center;
 }
 
