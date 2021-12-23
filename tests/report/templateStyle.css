@@ -1,0 +1,151 @@
+@import url(templateReset.css);
+@import url(templateFont.css);
+
+/* COMMON */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+html, body{
+  font-size: 62.5%;
+}
+.flexCol {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-between;
+  /* border:1px solid orange; */
+}
+.flexRow {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  /* border:1px solid orange; */
+}
+.item {
+  min-width: 150px;
+  flex-basis: calc(calc(20px - 100%)*1000000);
+  flex-shrink: 1;
+}
+.ratio15{width: 14.5%;}
+.ratio20{width: 20.5%;}
+.ratio30{width: 31.5%;}
+.ratio50{width: 48.5%;}
+.ratio70{width: 65.5%;}
+.ratio80{width: 76.5%;}
+.ratio85{width: 82.5%;}
+
+
+
+/* PAGE LAYOUT */
+.graph, p{
+  margin: 0.4rem 0;
+}
+main{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+}
+.page {
+  width: 50%;
+  /* min-height: 1360px; */
+  padding: 4.5% 5.8%;
+  border: 1px solid red;
+}
+.page > section:not(:last-child) {
+  margin-bottom: 7rem;
+}
+h3{
+  margin-bottom: 3rem;
+}
+
+
+/* TITLE BOX */
+.page:nth-child(even) .titleBox{margin-bottom: 3rem;}
+.page:nth-child(even) .titleBox strong{color: transparent;}
+.page:nth-child(even) .titleBox .pageNum{margin-left: auto;}
+.titleBox strong{
+  display: block;
+  border-bottom: 1px solid rgb(34, 30, 31);
+}
+.titleBox .pageNum{
+  display: block;
+  width: fit-content;
+  margin: 1.5rem 0 0.6rem 0;
+  padding:0.3rem 0.5rem 0.4rem 0.3rem;
+  background: rgb(220, 230, 231);
+  border-radius: 30px;
+}
+.titleBox h1{
+  margin: 5rem 0 3rem 0;
+}
+.titleBox h2{
+  display: flex;
+  justify-content: start;
+}
+.titleBox h2 small{
+  margin-left: 0.8rem;
+}
+
+
+
+/* RESULT BOX */
+.resultBox{
+  width: 100%;
+  display: flex;
+}
+.resultBox > .item{
+  flex-basis: auto;
+}
+.profileBox{
+  width: 100%;
+  display: flex;
+  margin-bottom: 2rem;
+}
+.profileImg img{
+  width: 100%;
+}
+
+
+
+/* TYPE BOX */
+.typeBox ul {gap: 3%;margin-bottom: 1.5rem;}
+.typeBox ul .item{flex-grow: 1;}
+.typeBox p small{
+  display: block;
+  margin-bottom: 1.3rem;
+}
+.typeBox h4{
+  margin-bottom: 1.5rem;
+}
+
+
+
+/* ADD CONTENT */
+.addContent > .item {
+  flex-basis: auto;
+}
+
+
+
+.graph {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+@media screen and (max-width:1800px){
+  .ratio30, .ratio70{width: 100%;}
+}
+@media screen and (max-width:1200px){
+  .page{width: 100%;}
+  .ratio20, .ratio30, .ratio50,
+  .ratio70, .ratio80{width: 100%;}
+}
+@media screen and (max-width:600px){
+  .ratio15, .ratio85{width: 100%;}
+  .profileBox h4{
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}

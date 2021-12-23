@@ -1,0 +1,52 @@
+/* BASIC SETTING */
+main {font-size: 1.4rem;}
+p{line-height: 1.6;}
+
+/* HEADING TAG */
+h1{
+  font-family: 'Work Sans', sans-serif;
+  font-size: 20rem;
+  font-weight: 100;
+  line-height: 0.68;
+}
+h2{
+  font-size: 4.5rem;
+  list-style: 0.7;
+}
+h3{
+  font-size: 2.6rem;
+}
+h4{
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+h4 span{
+  font-size: 1.4rem;
+}
+
+/* TITLE BOX */
+strong{
+  font-family: 'Merienda', cursive;
+  font-style: italic;
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #3ab6a3;
+}
+.pageNum{
+  font-family: 'Noto Sans KR', sans-serif;
+  font-style: normal;
+  font-size: 1rem;
+  font-weight: 400;
+}
+small{
+  font-size: 1.6rem;
+  font-weight: 100;
+}
+
+.typeBox p{
+  font-size: 1.2rem;
+}
+.typeBox p small{
+  font-size: 1rem;
+}
