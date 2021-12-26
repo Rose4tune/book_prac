@@ -1,17 +1,22 @@
 @import url(templateReset.css);
 @import url(templateFont.css);
 
-/* COMMON */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-html, body{
-  font-size: 62.5%;
+/* PDF STYLE */
+html.pdf, html.pdf body{font-size:175%;}
+.pdf .page{
+  width: 2480px;
+  height: 3508px;
 }
+
+/* COMMON */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+html, body{font-size: 62.5%;}
+
 .flexCol {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-content: space-between;
-  /* border:1px solid orange; */
 }
 .flexRow {
   width: 100%;
@@ -19,7 +24,6 @@ html, body{
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  /* border:1px solid orange; */
 }
 .item {
   min-width: 150px;
@@ -38,7 +42,7 @@ html, body{
 
 /* PAGE LAYOUT */
 .graph, p{
-  margin: 0.4rem 0;
+  margin: 0.6rem 0;
 }
 main{
   display: flex;
@@ -49,15 +53,15 @@ main{
 }
 .page {
   width: 50%;
-  /* min-height: 1360px; */
-  padding: 4.5% 5.8%;
+  padding: 4rem 6.8rem;
   border: 1px solid red;
 }
 .page > section:not(:last-child) {
   margin-bottom: 7rem;
 }
-h3{
+h5{
   margin-bottom: 3rem;
+  line-height: 1.4;
 }
 
 
@@ -69,23 +73,48 @@ h3{
   display: block;
   border-bottom: 1px solid rgb(34, 30, 31);
 }
-.titleBox .pageNum{
+.pageNum{
   display: block;
-  width: fit-content;
+  width: 2rem;
+  height: 2rem;
   margin: 1.5rem 0 0.6rem 0;
-  padding:0.3rem 0.5rem 0.4rem 0.3rem;
+  padding: 0.45rem 0;
   background: rgb(220, 230, 231);
-  border-radius: 30px;
+  border-radius: 10rem;
+  text-align: center;
 }
-.titleBox h1{
+.titleBox h3{
   margin: 5rem 0 3rem 0;
 }
-.titleBox h2{
+.titleBox .title{
   display: flex;
   justify-content: start;
 }
-.titleBox h2 small{
+.times{
   margin-left: 0.8rem;
+}
+
+
+
+/* TABLE OF CONTENT */
+.tableContBox {
+  /* position: relative; */
+}
+.tableContList {
+  width: fit-content;
+  margin-left: auto;
+  /* position: absolute;
+  bottom: 0;
+  right: 0; */
+}
+.tableContList h3{
+  margin: 40rem 0 3rem;
+}
+.tableContList ol{
+  list-style:upper-latin inside;
+}
+.tableContList ol li {
+  margin-bottom: 2.2rem;
 }
 
 
@@ -116,7 +145,7 @@ h3{
   display: block;
   margin-bottom: 1.3rem;
 }
-.typeBox h4{
+.typeBox h6{
   margin-bottom: 1.5rem;
 }
 
@@ -126,7 +155,6 @@ h3{
 .addContent > .item {
   flex-basis: auto;
 }
-
 
 
 .graph {
@@ -144,7 +172,7 @@ h3{
 }
 @media screen and (max-width:600px){
   .ratio15, .ratio85{width: 100%;}
-  .profileBox h4{
+  .profileBox h6{
     text-align: center;
     margin-bottom: 2rem;
   }
