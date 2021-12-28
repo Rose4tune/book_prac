@@ -36,6 +36,12 @@
       .html("여기에 다른 내용이 들어갑니다.");
     // d3.select("circle").remove();
     // d3.select("rect").style("fill", "lightyellow");
+
+    // 배열의 크기에 따른 요소 컨트롤
+    var someData = ["filler", "filler", "filler", "filler"];
+    d3.select("body").selectAll("div")
+      .data(someData).enter().append("div").html("Wow")
+      .append("span").html("Even more Wow").style("font-weight", "900");
   </script>
 </body>
 </html>
