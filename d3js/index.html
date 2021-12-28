@@ -42,6 +42,11 @@
     d3.select("body").selectAll("div")
       .data(someData).enter().append("div").html("Wow")
       .append("span").html("Even more Wow").style("font-weight", "900");
+
+    // filter 메서드
+    var someNum = [17, 82, 9, 500, 40, 5, 7, 56, 12, 9];
+    someNum = someNum.filter(function(el) {return el <= 40});
+    d3.select("body").selectAll('div').data(someNum).enter().append("div").html(function(d) {return d});
   </script>
 </body>
 </html>
