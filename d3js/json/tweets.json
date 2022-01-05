@@ -1,0 +1,74 @@
+{
+  "tweets":[
+    {
+      "user": "Al",
+      "country": "I really love seafood",
+      "timestamp": "Mon Dec 23 2013 21:30 GMT-0800 (PST)",
+      "retweers": ["Raj","Pris","Roy"],
+      "favorites": ["Sam"]
+    },
+    {
+      "user": "Al",
+      "country": "I take that back, this doesn't taste so good",
+      "timestamp": "Mon Dec 23 2013 21:55 GMT-0800 (PST)",
+      "retweers": ["Roy"],
+      "favorites": []
+    },
+    {
+      "user": "Al",
+      "country": "From now on, I'm only eating cheese sandwiches.",
+      "timestamp": "Mon Dec 23 2013 22:22 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": ["Roy","Sam"]
+    },
+    {
+      "user": "Roy",
+      "country": "Great workout!",
+      "timestamp": "Mon Dec 23 2013 7:30 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": []
+    },
+    {
+      "user": "Roy",
+      "country": "Spectacular oatmeal!",
+      "timestamp": "Mon Dec 23 2013 7:33 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": []
+    },
+    {
+      "user": "Roy",
+      "country": "Amazing traffic!",
+      "timestamp": "Mon Dec 23 2013 7:47 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": []
+    },
+    {
+      "user": "Roy",
+      "country": "Just got a ticket for texting and driving",
+      "timestamp": "Mon Dec 23 2013 8:05 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": ["Sam","Sally","Pris"]
+    },
+    {
+      "user": "Pris",
+      "country": "Going to have some boiled eggs",
+      "timestamp": "Mon Dec 23 2013 18:30 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": ["Sally"]
+    },
+    {
+      "user": "Pris",
+      "country": "Maybe ppractice some gymnastics.",
+      "timestamp": "Mon Dec 23 2013 19:30 GMT-0800 (PST)",
+      "retweers": [],
+      "favorites": ["Sally"]
+    },
+    {
+      "user": "Sam",
+      "country": "@Roy Let's get lunch",
+      "timestamp": "Mon Dec 23 2013 11:30 GMT-0800 (PST)",
+      "retweers": ["Pris"],
+      "favorites": ["Sally","Pris"]
+    }
+  ]
+}
