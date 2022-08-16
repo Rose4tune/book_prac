@@ -58,3 +58,32 @@ fx.go(
 );
 
 
+
+
+
+/**
+ * pipe 사용하여 함수 조합으로 함수 만들기
+ * (함수 중복 없애기)
+ */
+
+const total_price = fx.pipe(
+  fx.map(p => p.price),
+  fx.reduce(fx.add)
+)
+
+const base_total_price = predi => fx.pipe(
+  fx.filter(predi),
+  total_price,
+
+)
+
+fx.go(
+  products,
+  base_total_price(p => p.price < 20000),
+  log
+);
+fx.go(
+  products,
+  base_total_price(p => p.price >= 20000),
+  log
+);
