@@ -74,7 +74,6 @@ const total_price = fx.pipe(
 const base_total_price = predi => fx.pipe(
   fx.filter(predi),
   total_price,
-
 )
 
 fx.go(
