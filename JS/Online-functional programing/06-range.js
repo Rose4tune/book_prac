@@ -17,7 +17,7 @@ const range = l => {
   let i = -1;
   let res = [];
   while (++i < l) {
-    log(i, 'range')
+    // log(i, 'range')
     res.push(i);
   }
   return res;
@@ -45,7 +45,7 @@ const L = {};
 L.range = function* (l) {
   let i = -1;
   while (++i < l) {
-    log(i, 'L.range')
+    // log(i, 'L.range')
     yield i;
   }
 };
@@ -67,3 +67,26 @@ function test(name, time, f) {
   while (time--) f();
   console.timeEnd(name);
 }
+
+// test('L.range', 10, () => fx.reduce(fx.add, L.range(10000000)))
+// test('range', 10, () => fx.reduce(fx.add, range(10000000)))
+
+/**
+ * take 함수
+ * 많은 값을 받아서 짤라주는 함수
+ */
+
+const take = (l, iter) => {
+  let res = [];
+  for (const a of iter) {
+    res.push(a);
+    if(res.length == l) return res;
+  }
+  return res;
+}
+console.time('range')
+log(take(5, range(100000)))
+console.timeEnd('range')
+console.time('L.range')
+log(take(5, L.range(Infinity)))
+console.timeEnd('L.range')
