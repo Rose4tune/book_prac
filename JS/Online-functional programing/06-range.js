@@ -76,17 +76,30 @@ function test(name, time, f) {
  * 많은 값을 받아서 짤라주는 함수
  */
 
-const take = (l, iter) => {
+const take = fx.curry((l, iter) => {
   let res = [];
   for (const a of iter) {
     res.push(a);
     if(res.length == l) return res;
   }
   return res;
-}
-console.time('range')
-log(take(5, range(100000)))
-console.timeEnd('range')
-console.time('L.range')
-log(take(5, L.range(Infinity)))
-console.timeEnd('L.range')
+});
+
+console.time('range');
+// log(take(5, range(100000)));
+fx.go(
+  range(10000),
+  // take(5),
+  fx.reduce(fx.add),
+  log);
+console.timeEnd('range');
+
+
+console.time('');
+// log(take(5, L.range(Infinity)));
+fx.go(
+  L.range(10000),
+  // take(5),
+  fx.reduce(fx.add),
+  log);
+console.timeEnd('');

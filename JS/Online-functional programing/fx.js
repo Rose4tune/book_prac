@@ -31,4 +31,15 @@ export const add = (a, b) => a + b;
 
 
 export const go = (...args) => reduce((a, f) => f(a), args);//앞선 함수의 결과 값을 뒷 함수에 인자로 전달하는 함수
-export const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs)
+export const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
+
+
+
+export const take = (l, iter) => {
+  let res = [];
+  for (const a of iter) {
+    res.push(a);
+    if(res.length == l) return res;
+  }
+  return res;
+}
