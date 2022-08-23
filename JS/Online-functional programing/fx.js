@@ -45,7 +45,7 @@ L.filter = curry(function* (f, iter) {
 
 
 
-// TAKE FUNC
+// TAKE affiliation
 export const take = curry((l, iter) => {
   let res = [];
   for (const a of iter) {
@@ -55,7 +55,14 @@ export const take = curry((l, iter) => {
   return res;
 });
 
-// REDUCE FUNC
+export const find = curry((f, iter) => go(
+  iter,
+  L.filter(f),
+  take(3),
+  ([a]) => a
+));
+
+// REDUCE affiliation
 export const reduce = curry((f, acc, iter) => {
   if (!iter) {
     iter = acc[Symbol.iterator]();
@@ -64,6 +71,9 @@ export const reduce = curry((f, acc, iter) => {
   for (const a of iter) acc = f(acc, a);
   return acc
 });
+
+export const join = curry((sep = ',', iter) => reduce((a, b) => `${a}${sep}${b}`, iter));
+
 
 // COMMON FUNCs
 export const add = (a, b) => a + b;
