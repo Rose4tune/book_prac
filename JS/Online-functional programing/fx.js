@@ -1,11 +1,13 @@
 // CURRY & GO & PIPE
 export const curry = f => (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
 export const go = (...args) => reduce((a, f) => f(a), args);//앞선 함수의 결과 값을 뒷 함수에 인자로 전달하는 함수
-export const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
+export const pipe = (f, ...fs) => (...args) => go(f(...args), ...fs);
 
 
 // COMMON FUNCs
 export const add = (a, b) => a + b;
+const isIterable = a => a && a[Symbol.iterator];
+
 
 
 // TAKE affiliation (take, find)
@@ -68,6 +70,25 @@ L.filter = curry(function* (f, iter) {
   for (const a of iter) if(f(a)) yield a;
 });
 
+L.entries = function* (obj) {
+  for (const k in obj) yield [k, obj[k]];
+}
+
+L.flatten = function* (iter){
+  for (const a of iter) {
+    if (isIterable(a)) yield* a;
+    else yield a;
+  }
+}
+
+L.deepFlat = function* f(iter){
+  for (const a of iter) {
+    if (isIterable(a)) yield* f(a);
+    else yield a;
+  }
+}
+
+
 
 
 
@@ -114,3 +135,6 @@ export const map = curry(pipe(L.map, takeAll));
 // });
 export const filter = curry(pipe(L.filter, takeAll));
 // console.log(filter(a => a % 2, range(4)));
+
+
+export const flatten = pipe(L.flatten, takeAll);
