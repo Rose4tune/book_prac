@@ -88,6 +88,10 @@ L.deepFlat = function* f(iter){
   }
 }
 
+L.flatMap = curry(pipe(L.map, L.flatten));
+
+
+
 
 
 
@@ -138,3 +142,4 @@ export const filter = curry(pipe(L.filter, takeAll));
 
 
 export const flatten = pipe(L.flatten, takeAll);
+export const flatMap = curry(pipe(L.map, flatten));
