@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const log = console.log;
+
+    // callback
+    function add10(a, callback) {
+      setTimeout(() => callback(a + 10), 100);
+    }
+
+    add10(5, res => {
+      log(res);
+    })
+
+    // Promice
+    // 일급
+    function add20(a) {
+      return new Promise(resolve => setTimeout(() => resolve(a + 20), 100))
+    }
+
+    add20(5)
+      .then(log)
+
+
+
+
+    // 일급 활용
+
+    const delay100 = a => new Promise(resolve => setTimeout(() => resolve(a), 100))
+
+    // const go1 = (a, f) => f(a); // 동기적 값만 처리 가능
+    const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a); // 비동기 값도 처리 가능
+    const add5 = a => a + 5;
+
+    log(go1(10, add5))
+    log(delay100(10), add5) //
+  </script>
+</body>
+
+</html>
