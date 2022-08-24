@@ -30,14 +30,24 @@ export const find = curry((f, iter) => go(
 ));
 
 
+
+const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
+
 // REDUCE affiliation (reduce, join)
 export const reduce = curry((f, acc, iter) => {
   if (!iter) {
     iter = acc[Symbol.iterator]();
     acc = iter.next().value;
+  } else {
+    iter = iter[Symbol.iterator]();
   }
-  for (const a of iter) acc = f(acc, a);
-  return acc
+  return go1(acc, function recur(acc) {
+    for (const a of iter) {
+      acc = f(acc, a)
+      if (acc instanceof Promise) return acc.then(recur);
+    }
+    return acc;
+  });
 });
 
 export const join = curry((sep = ',', iter) => reduce((a, b) => `${a}${sep}${b}`, iter));
@@ -143,3 +153,4 @@ export const filter = curry(pipe(L.filter, takeAll));
 
 export const flatten = pipe(L.flatten, takeAll);
 export const flatMap = curry(pipe(L.map, flatten));
+
