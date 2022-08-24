@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module" src="./fx.js"></script>
+  <script type="module">
+    // const log = console.log;
+
+    // callback
+    function add10(a, callback) {
+      setTimeout(() => callback(a + 10), 100);
+    }
+
+    add10(5, res => {
+      // log(res);
+    })
+
+    // Promice
+    // 일급
+    function add20(a) {
+      return new Promise(resolve => setTimeout(() => resolve(a + 20), 100))
+    }
+
+    add20(5)
+    // .then(log)
+
+
+
+
+    // 일급 활용
+
+    const delay100 = a => new Promise(resolve => setTimeout(() => resolve(a), 100))
+
+    // const go1 = (a, f) => f(a); // 동기적 값만 처리 가능
+    const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a); // 비동기 값도 처리 가능
+    const add5 = a => a + 5;
+
+    console.log(go1(10, add5))
+    console.log(delay100(10), add5) //
+
+
+
+    /**
+     * 함수 합성
+     *  >> f(g(x))
+     * 
+     * 모나드 : 함수 합성을 안전하게 하는 도구
+     *  >> []
+     */
+
+    const g = a => a + 1;
+    const f = a => a * a;
+
+    console.log(f(g(1))) // 유의미한 값
+    console.log(f(g())) // 외부에 영향을 주고싶지 않음에도 불구하고 출력이 된다
+
+    // [1].map(g).map(f).forEach(r => log(r))
+
+    console.log([1, 2, 3, 4].filter(a => a % 2).map(g).map(f))
+    console.clear()
+  </script>
+
+  <script type="module">
+    import * as fx from './fx.js';
+    
+    const log = console.log;
+
+    const users = [
+      { id: 1, name: 'aa' },
+      { id: 2, name: 'bb' },
+      { id: 3, name: 'cc' },
+    ];
+
+    const getUserById = id =>
+      fx.find(u => u.id == id, users) || Promise.reject('없어요!!');
+
+    const f1 = ({ name }) => name;
+    const g1 = getUserById;
+    const fg1 = id => f1(g1(id));
+
+    const r = fg1(2);
+    // log(r) // bb
+
+    const r2 = fg1(2);
+    // log(r2) // error
+
+
+    const fg2 = id => Promise.resolve(id).then(g1).then(f1).catch(a => a);
+    fg2(2).then(log)
+
+    users.pop();
+    users.pop();
+
+    fg2(2).then(log)
+  </script>
+</body>
+
+</html>
