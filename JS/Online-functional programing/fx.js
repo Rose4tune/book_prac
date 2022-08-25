@@ -1,15 +1,21 @@
-// CURRY & GO & PIPE
+// CURRY
 export const curry = f => (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
 
+// GO
 export const go = (...args) => reduce((a, f) => f(a), args);//앞선 함수의 결과 값을 뒷 함수에 인자로 전달하는 함수
 const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
+// PIPE
 export const pipe = (f, ...fs) => (...args) => go(f(...args), ...fs);
+
+
 
 
 // COMMON FUNCs
 export const add = (a, b) => a + b;
 const isIterable = a => a && a[Symbol.iterator];
+const nop = Symbol('nop');
+
 
 
 
@@ -21,9 +27,11 @@ export const take = curry((l, iter) => {
     let cur;
     while (!(cur = iter.next()).done) {
       const a = cur.value;
-      if (a instanceof Promise) return a.then(
-        a => (res.push(a), res).length == l ? res : recur()
-      );
+      if (a instanceof Promise) {
+        return a
+          .then(a => (res.push(a), res).length == l ? res : recur())
+          .catch(e => e == nop ? recur() : Promise.reject(e))
+      }
       res.push(a);
       if (res.length == l) return res;
     }
@@ -39,6 +47,7 @@ export const find = curry((f, iter) => go(
   take(3),
   ([a]) => a
 ));
+
 
 
 
@@ -87,7 +96,11 @@ L.map = curry(function* (f, iter) {
 });
 
 L.filter = curry(function* (f, iter) {
-  for (const a of iter) if(f(a)) yield a;
+  for (const a of iter) {
+    const b = go1(a, f);
+    if (b instanceof Promise) yield b.then(b => b ? a : Promise.reject(nop));
+    else if (b) yield a;
+  };
 });
 
 L.entries = function* (obj) {
@@ -109,6 +122,9 @@ L.deepFlat = function* f(iter){
 }
 
 L.flatMap = curry(pipe(L.map, L.flatten));
+
+
+
 
 
 
