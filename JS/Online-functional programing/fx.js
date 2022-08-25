@@ -1,6 +1,9 @@
 // CURRY & GO & PIPE
 export const curry = f => (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
+
 export const go = (...args) => reduce((a, f) => f(a), args);//앞선 함수의 결과 값을 뒷 함수에 인자로 전달하는 함수
+const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
+
 export const pipe = (f, ...fs) => (...args) => go(f(...args), ...fs);
 
 
@@ -13,11 +16,19 @@ const isIterable = a => a && a[Symbol.iterator];
 // TAKE affiliation (take, find)
 export const take = curry((l, iter) => {
   let res = [];
-  for (const a of iter) {
-    res.push(a);
-    if(res.length == l) return res;
-  }
-  return res;
+  iter = iter[Symbol.iterator]();
+  return function recur() {
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (a instanceof Promise) return a.then(
+        a => (res.push(a), res).length == l ? res : recur()
+      );
+      res.push(a);
+      if (res.length == l) return res;
+    }
+    return res;
+  }();
 });
 
 export const takeAll = take(Infinity)
@@ -30,8 +41,6 @@ export const find = curry((f, iter) => go(
 ));
 
 
-
-const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
 // REDUCE affiliation (reduce, join)
 export const reduce = curry((f, acc, iter) => {
@@ -73,7 +82,8 @@ L.range = function* (l) {
 };
 
 L.map = curry(function* (f, iter) {
-  for (const a of iter) yield f(a);
+  // for (const a of iter) yield f(a);
+  for (const a of iter) yield go1(a, f);
 });
 
 L.filter = curry(function* (f, iter) {
