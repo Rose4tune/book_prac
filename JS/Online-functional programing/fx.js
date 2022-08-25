@@ -8,9 +8,6 @@ const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 // PIPE
 export const pipe = (f, ...fs) => (...args) => go(f(...args), ...fs);
 
-
-
-
 // COMMON FUNCs
 export const add = (a, b) => a + b;
 const isIterable = a => a && a[Symbol.iterator];

@@ -110,6 +110,22 @@
       fx.L.map(a => Promise.resolve(a * a)),
       fx.L.filter(a => Promise.resolve(a % 2)),
       fx.reduce(fx.add),
+      // log
+    )
+
+
+    // 지연평가 + Promise의 효율성
+    // 다음과 같이 일정 시간이 지난 후 실행되는 함수가 있다고 할 때,
+    // 이전 실행과 다음 실행 사이의 대기시간 동안에는 함수 실행 자체가 안되고 기다렸다가
+    // 설정한 시간이 지나고나면 함수를 그 때 실행한다.
+    // >> 필요한 상황에만, 필요한 만큼만 실행되게 할 수 있다!!!
+
+    
+    fx.go(
+      [1, 2, 3, 4, 5, 6, 7],
+      fx.L.map(a => new Promise(resolve => setTimeout(() => resolve(a * a), 1000))),
+      fx.L.filter(a => Promise.resolve(a % 2)),
+      fx.reduce(fx.add),
       log
     )
   </script>
