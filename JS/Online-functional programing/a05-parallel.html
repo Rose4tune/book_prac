@@ -23,18 +23,38 @@
     import * as fx from './fx.js';
     var log = console.log;
 
+    const C = {};
+
+    // 미리 에러를 캐치하고 아무일도 안하게 해놓는다
+    function noop(){}
+    const catchNoop = arr => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
+
+    C.reduce = fx.curry((f, acc, iter) => {
+      const iter2 = catchNoop(iter ? [...iter] : [...acc]);
+      return iter ?
+        fx.reduce(f, acc, iter2) :
+        fx.reduce(f, iter2)
+    });
+
+    C.take = fx.curry((l, iter) => fx.take(l, catchNoop([...iter])))
+
     const delay500 = a => new Promise(resolve => {
       console.log('hi!!');
       setTimeout(() => resolve(a), 500)
     });
 
+    console.time('')
     fx.go(
       [1, 2, 3, 4, 5],
       fx.L.map(a => delay500(a * a)),
-      fx.L.filter(a => a % 2),
-      fx.reduce(fx.add),
-      log
+      fx.L.filter(a => delay500(a % 2)),
+      fx.L.map(a => delay500(a * a)),
+      C.take(2),
+      C.reduce(fx.add),
+      log,
+      _ => console.timeEnd('')
     )
+    
   </script>
 
 
