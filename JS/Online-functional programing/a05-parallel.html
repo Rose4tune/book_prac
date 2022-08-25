@@ -31,15 +31,20 @@
 
     // 미리 에러를 캐치하고 아무일도 안하게 해놓는다
     function noop(){}
-    const catchNoop = arr => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
+    const catchNoop = ([...arr]) => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
 
-    C.reduce = fx.curry((f, acc, iter) => {
-      const iter2 = catchNoop(iter ? [...iter] : [...acc]);
-      return iter ?
-        fx.reduce(f, acc, iter2) :
-        fx.reduce(f, iter2)
-    });
-    C.take = fx.curry((l, iter) => fx.take(l, catchNoop([...iter])))
+    // C.reduce = fx.curry((f, acc, iter) => {
+    //   const iter2 = catchNoop(iter ? [...iter] : [...acc]);
+    //   return iter ?
+    //     fx.reduce(f, acc, iter2) :
+    //     fx.reduce(f, iter2)
+    // });
+
+    C.reduce = fx.curry((f, acc, iter) => iter ?
+        fx.reduce(f, acc, catchNoop(iter)) :
+        fx.reduce(f, catchNoop(acc)));
+        
+    C.take = fx.curry((l, iter) => fx.take(l, catchNoop(iter)))
     C.takeAll = C.take(Infinity);
     C.map = fx.curry(fx.pipe(fx.L.map, C.takeAll));
     C.filter = fx.curry(fx.pipe(fx.L.filter, C.takeAll));
@@ -49,19 +54,21 @@
     /**
      * 1. 지연 병렬적 평가 (C.reduce, C.take)
     */
-    const delay500 = a => new Promise(resolve => setTimeout(() => resolve(a), 500));
+    // const delay500 = a => new Promise(resolve => setTimeout(() => resolve(a), 500));
+    // console.time('')
+    // fx.go(
+    //   [1, 2, 3, 4, 5],
+    //   fx.L.map(a => delay500(a * a)),
+    //   fx.L.filter(a => delay500(a % 2)),
+    //   fx.L.map(a => delay500(a * a)),
+    //   C.take(2),
+    //   C.reduce(fx.add),
+    //   log,
+    //   _ => console.timeEnd('')
+    // );
 
-    console.time('')
-    fx.go(
-      [1, 2, 3, 4, 5],
-      fx.L.map(a => delay500(a * a)),
-      fx.L.filter(a => delay500(a % 2)),
-      fx.L.map(a => delay500(a * a)),
-      C.take(2),
-      C.reduce(fx.add),
-      // log,
-      // _ => console.timeEnd('')
-    );
+
+
 
 
 
@@ -69,8 +76,34 @@
     /**
      * 2. 즉시 병렬적 평가 (C.map, C.filter)
     */
-    C.map(a => delay500(a * a), [1, 2, 3, 4]).then(log);
-    C.filter(a => delay500(a % 2), [1, 2, 3, 4]).then(log);
+    // C.map(a => delay500(a * a), [1, 2, 3, 4]).then(log);
+    // C.filter(a => delay500(a % 2), [1, 2, 3, 4]).then(log);
+
+
+
+
+
+
+    
+    /**
+     * 3. 즉시, 지연, Promise, 병렬적 조합하기
+    */
+    const delay500 = (a, name) => new Promise(resolve => {
+      log(`${name} : ${a}`);
+      setTimeout(() => resolve(a), 500)
+    });
+
+    console.time('')
+    fx.go(
+      [1, 2, 3, 4, 5, 6, 7, 8],
+      fx.L.map(a => delay500(a * a, 'map 1')),
+      fx.L.filter(a => delay500(a % 2, 'filter 2')),
+      fx.L.map(a => delay500(a + 1, 'map 3')),
+      C.take(4),
+      // fx.reduce(fx.add),
+      // log,
+      // _ => console.timeEnd('')
+    );
   </script>
 
 
