@@ -49,19 +49,31 @@ export const find = curry((f, iter) => go(
 ));
 
 
+const reduceF = (acc, a, f) =>
+  a instanceof Promise ?
+    a.then(a => f(acc, a), e => e == nop ? acc : Promise.reject(e)) :
+    f(acc, a);
 
+const head = iter => go1(take(1, iter), ([h]) => h);
 
 // REDUCE affiliation (reduce, join)
 export const reduce = curry((f, acc, iter) => {
-  if (!iter) {
-    iter = acc[Symbol.iterator]();
-    acc = iter.next().value;
-  } else {
-    iter = iter[Symbol.iterator]();
-  }
+  // if (!iter) {
+  //   return reduce(f, head(iter = acc[Symbol.iterator]()), iter);
+    // iter = acc[Symbol.iterator]();
+    // acc = iter.next().value;
+  // } else {
+  //   iter = iter[Symbol.iterator]();
+  // }
+  if (!iter) return reduce(f, head(iter = acc[Symbol.iterator]()), iter);
+  iter = iter[Symbol.iterator]();
+
   return go1(acc, function recur(acc) {
-    for (const a of iter) {
-      acc = f(acc, a)
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      // acc = f(acc, a);
+      acc = reduceF(acc, cur.value, f);
       if (acc instanceof Promise) return acc.then(recur);
     }
     return acc;

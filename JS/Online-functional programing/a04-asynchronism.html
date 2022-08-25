@@ -9,7 +9,10 @@
 </head>
 
 <body>
-  <h1>비동기적으로 기존 함수들을 변경해보자!!</h1>
+  <h1>
+    비동기적으로 기존 함수들을 변경해보자!!<br>
+    동기와 Promise 동시지원
+  </h1>
   <script type="module" src="./fx.js"></script>
 
 
@@ -89,6 +92,8 @@
     console.clear();
 
     // Kleisli Composition
+
+    // filter에서 nop 지원
     fx.go(
       // [1, 2, 3, 4, 5, 6],
       fx.range(10),
@@ -96,10 +101,17 @@
       // fx.L.filter(a => a % 2),
       fx.L.filter(a => Promise.resolve(a % 2)),
       fx.take(5),
-      log
+      // log
     )
 
     // reduce에서 nop 지원
+    fx.go(
+      [1, 2, 3, 4, 5, 6, 7],
+      fx.L.map(a => Promise.resolve(a * a)),
+      fx.L.filter(a => Promise.resolve(a % 2)),
+      fx.reduce(fx.add),
+      log
+    )
   </script>
   
 
