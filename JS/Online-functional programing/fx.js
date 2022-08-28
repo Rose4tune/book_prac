@@ -46,6 +46,10 @@ export const find = curry((f, iter) => go(
 ));
 
 
+
+
+
+// REDUCE affiliation (reduce, join)
 const reduceF = (acc, a, f) =>
   a instanceof Promise ?
     a.then(a => f(acc, a), e => e == nop ? acc : Promise.reject(e)) :
@@ -53,7 +57,6 @@ const reduceF = (acc, a, f) =>
 
 const head = iter => go1(take(1, iter), ([h]) => h);
 
-// REDUCE affiliation (reduce, join)
 export const reduce = curry((f, acc, iter) => {
   // if (!iter) {
   //   return reduce(f, head(iter = acc[Symbol.iterator]()), iter);
@@ -78,6 +81,18 @@ export const reduce = curry((f, acc, iter) => {
 });
 
 export const join = curry((sep = ',', iter) => reduce((a, b) => `${a}${sep}${b}`, iter));
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -189,3 +204,46 @@ export const filter = curry(pipe(L.filter, takeAll));
 export const flatten = pipe(L.flatten, takeAll);
 export const flatMap = curry(pipe(L.map, flatten));
 
+
+
+
+
+
+
+
+
+
+
+
+// PARALLEL
+const C = {};
+function noop(){}
+const catchNoop = ([...arr]) => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
+
+C.reduce = curry((f, acc, iter) => iter ?
+  reduce(f, acc, catchNoop(iter)) :
+  reduce(f, catchNoop(acc)));
+
+C.take = curry((l, iter) => take(l, catchNoop(iter)))
+C.takeAll = C.take(Infinity);
+C.map = curry(pipe(L.map, C.takeAll));
+C.filter = curry(pipe(L.filter, C.takeAll));
+
+
+const delay500 = (a, name) => new Promise(resolve => {
+  console.log(`${name} : ${a}`);
+  setTimeout(() => resolve(a), 500)
+});
+
+
+// console.time('')
+// go(
+//   [1, 2, 3, 4, 5, 6, 7, 8],
+//   L.map(a => delay500(a * a, 'map 1')),
+//   L.filter(a => delay500(a % 2, 'filter 2')),
+//   L.map(a => delay500(a + 1, 'map 3')),
+//   C.take(4),
+//   C.reduce(add),
+//   console.log(),
+//   _ => console.timeEnd('')
+// );

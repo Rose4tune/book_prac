@@ -96,12 +96,12 @@
     console.time('')
     fx.go(
       [1, 2, 3, 4, 5, 6, 7, 8],
-      fx.L.map(a => delay500(a * a, 'map 1')),
-      fx.L.filter(a => delay500(a % 2, 'filter 2')),
-      fx.L.map(a => delay500(a + 1, 'map 3')),
+      C.map(a => delay500(a * a, 'map 1')),
+      C.filter(a => delay500(a % 2, 'filter 2')),
+      // C.map(a => delay500(a + 1, 'map 3')),
       C.take(4),
-      // fx.reduce(fx.add),
-      // log,
+      // C.reduce(fx.add),
+      log
       // _ => console.timeEnd('')
     );
   </script>
