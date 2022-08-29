@@ -22,10 +22,9 @@
 
 
   <h2>비동기 상황에서 에러 헨들링(파이프라인의 이점)</h2>
-    <script type="module">
-    import {go, map, filter, take, L} from './fx.js';
-    var log = console.log;
-    
+  <script type="module">
+    import {go, curry, pipe, reduce, take, takeAll, find, join, map, filter, range, L, add, log} from '../fx.js';
+
     async function f9(list) {
       try {
         return await go(

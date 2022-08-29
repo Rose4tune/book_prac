@@ -1,6 +1,6 @@
-import * as fx from './fx.js';
-const log = console.log;
-const L = {};
+import {go, curry, pipe, reduce, take, takeAll, map, filter, range, L, add, log} from '../fx.js';
+
+// const L = {};
 
 const ex1 = [[1, 2], 3, 4, [5, 6], [7, 8, 9]];
 const ex2 = [[1, 2], 3, 4, [5, 6, [7, 8, 9, [10, 11]]]];
@@ -25,7 +25,7 @@ L.flatten = function* (iter){
 }
 
 log([...L.flatten(ex1)]);
-log(fx.take(3, L.flatten(ex1)));
+log(take(3, L.flatten(ex1)));
 
 
 
@@ -33,7 +33,7 @@ log(fx.take(3, L.flatten(ex1)));
  * flatten
  */
 
-const flatten = fx.pipe(L.flatten, fx.takeAll);
+const flatten = pipe(L.flatten, takeAll);
 log(flatten(ex1))
 
 
@@ -62,9 +62,9 @@ console.clear();
  * 기본 메서드 flatMap (Array만 사용 가능)
  */
 
-L.flatMap = fx.curry(fx.pipe(fx.L.map, L.flatten));
+L.flatMap = curry(pipe(L.map, L.flatten));
 
-const flatMap = fx.curry(fx.pipe(fx.L.map, flatten));
+const flatMap = curry(pipe(L.map, flatten));
 
 
 var it = L.flatMap(a => a, [[1, 2], [3, 4], [5, 6], [7, 8, 9]]);
@@ -72,11 +72,11 @@ log([...it])
 
 
 log(flatMap(a => a, [[1, 2], [3, 4], [5, 6, 7, 8]]));
-log(flatMap(fx.L.range, fx.map(a => a + 1, [1, 2, 3])));
+log(flatMap(L.range, map(a => a + 1, [1, 2, 3])));
 
-var it = L.flatMap(fx.L.range, fx.map(a => a + 1, [1, 2, 3]));
+var it = L.flatMap(L.range, map(a => a + 1, [1, 2, 3]));
 log(it.next());
 log(it.next());
 log(it.next());
 
-log(fx.take(3, it))
+log(take(3, it))

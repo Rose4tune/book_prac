@@ -1,5 +1,4 @@
-
-import * as fx from './fx.js';
+import {go, curry, pipe, reduce, map, filter, add} from '../fx.js';
 
 const log = console.log;
 /**
@@ -25,7 +24,7 @@ const range = l => {
 
 var list = range(4);
 log(list)
-// log(fx.reduce(fx.add, list))
+// log(reduce(add, list))
 
 
 
@@ -51,7 +50,7 @@ L.range = function* (l) {
 };
 
 var list = L.range(4);
-// log(fx.reduce(fx.add, list))
+// log(reduce(add, list))
 
 
 
@@ -68,15 +67,15 @@ function test(name, time, f) {
   console.timeEnd(name);
 }
 
-// test('L.range', 10, () => fx.reduce(fx.add, L.range(10000000)))
-// test('range', 10, () => fx.reduce(fx.add, range(10000000)))
+// test('L.range', 10, () => reduce(add, L.range(10000000)))
+// test('range', 10, () => reduce(add, range(10000000)))
 
 /**
  * take 함수
  * 많은 값을 받아서 짤라주는 함수
  */
 
-const take = fx.curry((l, iter) => {
+const take = curry((l, iter) => {
   let res = [];
   for (const a of iter) {
     res.push(a);
@@ -87,19 +86,19 @@ const take = fx.curry((l, iter) => {
 
 console.time('range');
 // log(take(5, range(100000)));
-fx.go(
+go(
   range(10000),
   // take(5),
-  fx.reduce(fx.add),
+  reduce(add),
   log);
 console.timeEnd('range');
 
 
 console.time('');
 // log(take(5, L.range(Infinity)));
-fx.go(
+go(
   L.range(10000),
   // take(5),
-  fx.reduce(fx.add),
+  reduce(add),
   log);
 console.timeEnd('');

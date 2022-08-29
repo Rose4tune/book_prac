@@ -1,5 +1,4 @@
-import * as fx from './fx.js';
-const log = console.log;
+import {go, curry, pipe, reduce, take, map, filter, range, L, add, log} from '../fx.js';
 
   /**
    * map, filter 계열 함수들이 가지는 결합 법칙
@@ -24,16 +23,16 @@ const log = console.log;
    *  - reduce 계열의 함수
    */
 
-  fx.L.entries = function* (obj) {
+  L.entries = function* (obj) {
     for (const k in obj) yield [k, obj[k]];
   }
 
-  const join = fx.curry((sep = ',', iter) =>
-    fx.reduce((a, b) => `${a}${sep}${b}`, iter));
+  const join = curry((sep = ',', iter) =>
+    reduce((a, b) => `${a}${sep}${b}`, iter));
 
-  const queryStr = fx.pipe(
-    fx.L.entries,
-    fx.L.map(([k, v])=> `${k}=${v}`),
+  const queryStr = pipe(
+    L.entries,
+    L.map(([k, v])=> `${k}=${v}`),
     // function(a) {
     //   console.log(a);
     //   return a;
@@ -80,29 +79,29 @@ const log = console.log;
   ];
 
   // 다 돌고 있음.. 비효율적
-  // const find = (f, iter) => fx.go(
+  // const find = (f, iter) => go(
   //   iter,
-  //   fx.filter(a => (console.log(a), f(a))),
+  //   filter(a => (console.log(a), f(a))),
   //   a => (console.log(a), a),
-  //   fx.take(1),
+  //   take(1),
   //   ([a]) => a
   // );
 
   // 결과를 미뤄서 하나의 값이 꺼내지면 필터를 하지않음
-  const find = fx.curry((f, iter) => fx.go(
+  const find = curry((f, iter) => go(
     iter,
-    // fx.L.filter(a => (console.log(a), f(a))),
+    // L.filter(a => (console.log(a), f(a))),
     // a => (console.log(a), a),
-    fx.L.filter(f),
-    fx.take(3),
+    L.filter(f),
+    take(3),
     ([a]) => a
   ));
 
   log(find(u => u.age < 30)(users));
 
-  fx.go(
+  go(
     users,
-    fx.L.map(u => u.age),
+    L.map(u => u.age),
     find(n => n < 30),
     log
   )

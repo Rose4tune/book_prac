@@ -1,5 +1,4 @@
-import * as fx from './fx.js';
-const log = console.log;
+import {go, curry, pipe, reduce, take, takeAll, map, filter, range, L, add, log} from '../fx.js';
 
 /**
  * 2차원 배열 다루기
@@ -12,12 +11,12 @@ const arr = [
   [9, 10]
 ];
 
-fx.go(arr,
-  fx.L.flatten,
-  fx.L.filter(a => a % 2),
-  fx.L.map(a => a * a),
-  fx.take(4),
-  fx.reduce(fx.add),
+go(arr,
+  L.flatten,
+  L.filter(a => a % 2),
+  L.map(a => a * a),
+  take(4),
+  reduce(add),
   log
 )
 
@@ -54,14 +53,14 @@ var users = [
 ];
 
 
-fx.go(users,
-  fx.L.map(u => u.family),
-  fx.L.flatten,
-  fx.L.filter(u => u.age < 20),
-  fx.L.map(u => u.age),
-  // fx.take(2),
-  fx.takeAll,
-  // fx.reduce(fx.add),
+go(users,
+  L.map(u => u.family),
+  L.flatten,
+  L.filter(u => u.age < 20),
+  L.map(u => u.age),
+  // take(2),
+  takeAll,
+  // reduce(add),
   log
 )
 

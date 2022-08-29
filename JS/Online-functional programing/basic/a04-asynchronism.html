@@ -19,10 +19,9 @@
 
   <h2>1. go / reduce</h2>
   <script type="module">
-    import * as fx from './fx.js';
-    var log = console.log;
+    import {go, curry, pipe, reduce, take, takeAll, find, join, map, filter, range, L, add, log} from '../fx.js';
 
-    fx.go(
+    go(
       Promise.resolve(1),
       a => a + 10,
       a => Promise.resolve(a + 100),
@@ -31,7 +30,7 @@
       // log
     );
 
-    fx.go(
+    go(
       Promise.resolve(2),
       a => a + 20,
       a => Promise.reject('error~~'),
@@ -58,26 +57,26 @@
 
   <h2>2. L.map / map / take</h2>
   <script type="module">
-    import * as fx from './fx.js';
-    var log = console.log;
+    import {go, curry, pipe, reduce, take, takeAll, find, join, map, filter, range, L, add, log} from '../fx.js';
+
     console.clear();
 
-    fx.go(
+    go(
       // [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
-      // fx.range(3),
+      // range(3),
       [1, 2, 3, 67],
-      fx.L.map(a => Promise.resolve(a + 10)),
-      fx.take(2),
+      L.map(a => Promise.resolve(a + 10)),
+      take(2),
       log
     )
 
-    fx.go(
+    go(
       // [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
-      // fx.range(3),
+      // range(3),
       [1, 2, 3, 67],
-      // fx.L.map(a => a + 10),
-      // fx.takeAll,
-      fx.map(a => Promise.resolve(a + 10)),
+      // L.map(a => a + 10),
+      // takeAll,
+      map(a => Promise.resolve(a + 10)),
       log
     )
   </script>
@@ -87,29 +86,27 @@
 
   <h2>3. L.filter / filter / nop / take</h2>
   <script type="module">
-    import * as fx from './fx.js';
-    var log = console.log;
-    // console.clear();
+    import {go, curry, pipe, reduce, take, takeAll, find, join, map, filter, range, L, add, log} from '../fx.js';
 
     // Kleisli Composition
 
     // filter에서 nop 지원
-    fx.go(
+    go(
       // [1, 2, 3, 4, 5, 6],
-      fx.range(10),
-      fx.L.map(a => Promise.resolve(a * a)),
-      // fx.L.filter(a => a % 2),
-      fx.L.filter(a => Promise.resolve(a % 2)),
-      fx.take(5),
+      range(10),
+      L.map(a => Promise.resolve(a * a)),
+      // L.filter(a => a % 2),
+      L.filter(a => Promise.resolve(a % 2)),
+      take(5),
       // log
     )
 
     // reduce에서 nop 지원
-    fx.go(
+    go(
       [1, 2, 3, 4, 5, 6, 7],
-      fx.L.map(a => Promise.resolve(a * a)),
-      fx.L.filter(a => Promise.resolve(a % 2)),
-      fx.reduce(fx.add),
+      L.map(a => Promise.resolve(a * a)),
+      L.filter(a => Promise.resolve(a % 2)),
+      reduce(add),
       log
     )
 
@@ -121,11 +118,11 @@
     // >> 필요한 상황에만, 필요한 만큼만 실행되게 할 수 있다!!!
 
     
-    fx.go(
+    go(
       [1, 2, 3, 4, 5, 6, 7],
-      fx.L.map(a => new Promise(resolve => setTimeout(() => resolve(a * a), 1000))),
-      fx.L.filter(a => Promise.resolve(a % 2)),
-      fx.reduce(fx.add),
+      L.map(a => new Promise(resolve => setTimeout(() => resolve(a * a), 1000))),
+      L.filter(a => Promise.resolve(a % 2)),
+      reduce(add),
       log
     )
   </script>

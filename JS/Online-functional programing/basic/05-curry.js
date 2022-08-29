@@ -1,5 +1,4 @@
-
-import * as fx from './fx.js';
+import {go, pipe, reduce, map, filter, add} from '../fx.js';
 
 const log = console.log;
 
@@ -33,27 +32,27 @@ const mult3 = mult(3);
  * 기존 products 배열에서 가격이 특정한(<20000) 것만 골라서
  * 그 전체 합을 구하는 함수 reduce를 다시 가져와서 보면..
  */
-log(fx.reduce(
-  fx.add,
-  fx.map(p => p.price,
-    fx.filter(p => p.price < 20000, products))));
+log(reduce(
+  add,
+  map(p => p.price,
+    filter(p => p.price < 20000, products))));
 
 // >> go 적용 : 함수의 순서 바꿈
-fx.go(
+go(
   products,
-  products => fx.filter(p => p.price < 20000)(products),
-  products => fx.map(p => p.price)(products),
-  prices => fx.reduce(fx.add)(prices),
+  products => filter(p => p.price < 20000)(products),
+  products => map(p => p.price)(products),
+  prices => reduce(add)(prices),
   log
 );
 
 // >> curry 적용 : 간결한 표현으로 바꿈 (map, filter, reduce에 curry 씌움)
 // (인자의 중복 삭제, 바로 이전 인자가 다음 함수의 인자로 들어감)
-fx.go(
+go(
   products,
-  fx.filter(p => p.price < 20000),
-  fx.map(p => p.price),
-  fx.reduce(fx.add),
+  filter(p => p.price < 20000),
+  map(p => p.price),
+  reduce(add),
   log
 );
 
@@ -66,22 +65,22 @@ fx.go(
  * (함수 중복 없애기)
  */
 
-const total_price = fx.pipe(
-  fx.map(p => p.price),
-  fx.reduce(fx.add)
+const total_price = pipe(
+  map(p => p.price),
+  reduce(add)
 )
 
-const base_total_price = predi => fx.pipe(
-  fx.filter(predi),
+const base_total_price = predi => pipe(
+  filter(predi),
   total_price,
 )
 
-fx.go(
+go(
   products,
   base_total_price(p => p.price < 20000),
   log
 );
-fx.go(
+go(
   products,
   base_total_price(p => p.price >= 20000),
   log

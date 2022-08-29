@@ -68,9 +68,7 @@
   </script>
 
   <script type="module">
-    import * as fx from './fx.js';
-    
-    const log = console.log;
+    import {go, curry, pipe, reduce, take, takeAll, find, join, map, filter, range, L, add, log} from '../fx.js';
 
     const users = [
       { id: 1, name: 'aa' },
@@ -79,7 +77,7 @@
     ];
 
     const getUserById = id =>
-      fx.find(u => u.id == id, users) || Promise.reject('없어요!!');
+      find(u => u.id == id, users) || Promise.reject('없어요!!');
 
     const f1 = ({ name }) => name;
     const g1 = getUserById;

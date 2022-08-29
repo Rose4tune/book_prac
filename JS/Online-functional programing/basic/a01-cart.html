@@ -5,14 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>장바구니</title>
-  <script type="module" src="fx.js"></script>
+  <script type="module" src="../fx.js"></script>
 </head>
 <body>
   <div id="cart"></div>
 
   <script type="module">
-    import * as fx from './fx.js';
-    const log = console.log;
+    import {go, curry, pipe, reduce, take, takeAll, find, join, map, filter, range, L, add, log} from '../fx.js';
 
     const products = [
       {name: '반팔티', price: 15000, quantity: 1, is_selected: true},
@@ -22,24 +21,24 @@
       {name: '바지', price: 25000, quantity: 5, is_selected: false}
     ];
 
-    const add = (a, b) => a + b;
-    const sum = fx.curry((f, iter) => fx.go(
+    // const add = (a, b) => a + b;
+    const sum = curry((f, iter) => go(
       iter,
-      fx.map(f),
-      fx.reduce(add)));
+      map(f),
+      reduce(add)));
 
-    // const total_quantity = fx.pipe(
-    //   fx.map(p => p.quantity),
-    //   fx.reduce(add));
+    // const total_quantity = pipe(
+    //   map(p => p.quantity),
+    //   reduce(add));
 
     // const total_quantity = products => sum(p => p.quantity, products)
 
     const total_quantity = sum(p => p.quantity)
     
     
-    // const total_price = fx.pipe(
-    //   fx.map(p => p.price * p.quantity),
-    //   fx.reduce(add));
+    // const total_price = pipe(
+    //   map(p => p.price * p.quantity),
+    //   reduce(add));
 
     // const total_price = products => sum(p => p.price * p.quantity, products)
 
@@ -58,7 +57,7 @@
           <th>수량</th>
           <th>총 가격</th>
         </tr>
-        ${fx.go(products, sum(p => `
+        ${go(products, sum(p => `
             <tr>
               <td><input type="checkbox" ${p.is_selected ? 'checked' : ''}></td>
               <td>${p.name}</td>
@@ -69,8 +68,8 @@
         `))}
         <tr>
           <td colspan="2">합계</td>
-          <td>${total_quantity(fx.filter(p => p.is_selected, products))}</td>
-          <td>${total_price(fx.filter(p => p.is_selected, products))}</td>
+          <td>${total_quantity(filter(p => p.is_selected, products))}</td>
+          <td>${total_price(filter(p => p.is_selected, products))}</td>
         </tr>
       </table>
     `;

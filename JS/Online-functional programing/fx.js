@@ -9,10 +9,10 @@ const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 export const pipe = (f, ...fs) => (...args) => go(f(...args), ...fs);
 
 // COMMON FUNCs
+export const log = console.log;
 export const add = (a, b) => a + b;
 const isIterable = a => a && a[Symbol.iterator];
 const nop = Symbol('nop');
-var log = console.log;
 
 
 
@@ -208,9 +208,9 @@ export const flatMap = curry(pipe(L.map, flatten));
 
 
 // PARALLEL
-const C = {};
-function noop(){};
-const catchNoop = ([...arr]) => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
+export const C = {};
+export function noop(){};
+export const catchNoop = ([...arr]) => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
 
 C.reduce = curry((f, acc, iter) => iter ?
   reduce(f, acc, catchNoop(iter)) :
@@ -228,14 +228,14 @@ const delay500 = (a, name) => new Promise(resolve => {
 });
 
 
-console.time('')
-go(
-  [1, 2, 3, 4, 5, 6, 7, 8],
-  L.map(a => delay500(a * a, 'map 1')),
-  L.filter(a => delay500(a % 2, 'filter 2')),
-  L.map(a => delay500(a + 1, 'map 3')),
-  C.take(4),
-  // reduce(add),
-  log
-  // _ => console.timeEnd('')
-);
+// console.time('')
+// go(
+//   [1, 2, 3, 4, 5, 6, 7, 8],
+//   L.map(a => delay500(a * a, 'map 1')),
+//   L.filter(a => delay500(a % 2, 'filter 2')),
+//   L.map(a => delay500(a + 1, 'map 3')),
+//   C.take(4),
+//   reduce(add),
+//   log
+//   _ => console.timeEnd('')
+// );

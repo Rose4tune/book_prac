@@ -1,4 +1,4 @@
-import * as fx from './fx.js';
+import * as fx from '../fx.js';
 const log = console.log;
 
 /**

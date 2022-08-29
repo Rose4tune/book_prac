@@ -1,5 +1,5 @@
-import * as fx from './fx.js';
-const log = console.log;
+import {go, curry, pipe, reduce, map, filter, add, log} from '../fx.js';
+
 
 /**
  * 이터러블 중심 프로그래밍에서의 지연 평가
