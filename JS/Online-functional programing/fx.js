@@ -12,6 +12,7 @@ export const pipe = (f, ...fs) => (...args) => go(f(...args), ...fs);
 export const add = (a, b) => a + b;
 const isIterable = a => a && a[Symbol.iterator];
 const nop = Symbol('nop');
+var log = console.log;
 
 
 
@@ -58,21 +59,12 @@ const reduceF = (acc, a, f) =>
 const head = iter => go1(take(1, iter), ([h]) => h);
 
 export const reduce = curry((f, acc, iter) => {
-  // if (!iter) {
-  //   return reduce(f, head(iter = acc[Symbol.iterator]()), iter);
-    // iter = acc[Symbol.iterator]();
-    // acc = iter.next().value;
-  // } else {
-  //   iter = iter[Symbol.iterator]();
-  // }
   if (!iter) return reduce(f, head(iter = acc[Symbol.iterator]()), iter);
-  iter = iter[Symbol.iterator]();
 
+  iter = iter[Symbol.iterator]();
   return go1(acc, function recur(acc) {
     let cur;
     while (!(cur = iter.next()).done) {
-      const a = cur.value;
-      // acc = f(acc, a);
       acc = reduceF(acc, cur.value, f);
       if (acc instanceof Promise) return acc.then(recur);
     }
@@ -217,14 +209,14 @@ export const flatMap = curry(pipe(L.map, flatten));
 
 // PARALLEL
 const C = {};
-function noop(){}
+function noop(){};
 const catchNoop = ([...arr]) => (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
 
 C.reduce = curry((f, acc, iter) => iter ?
   reduce(f, acc, catchNoop(iter)) :
   reduce(f, catchNoop(acc)));
 
-C.take = curry((l, iter) => take(l, catchNoop(iter)))
+C.take = curry((l, iter) => take(l, catchNoop([...iter])))
 C.takeAll = C.take(Infinity);
 C.map = curry(pipe(L.map, C.takeAll));
 C.filter = curry(pipe(L.filter, C.takeAll));
@@ -236,14 +228,14 @@ const delay500 = (a, name) => new Promise(resolve => {
 });
 
 
-// console.time('')
-// go(
-//   [1, 2, 3, 4, 5, 6, 7, 8],
-//   L.map(a => delay500(a * a, 'map 1')),
-//   L.filter(a => delay500(a % 2, 'filter 2')),
-//   L.map(a => delay500(a + 1, 'map 3')),
-//   C.take(4),
-//   C.reduce(add),
-//   console.log(),
-//   _ => console.timeEnd('')
-// );
+console.time('')
+go(
+  [1, 2, 3, 4, 5, 6, 7, 8],
+  L.map(a => delay500(a * a, 'map 1')),
+  L.filter(a => delay500(a % 2, 'filter 2')),
+  L.map(a => delay500(a + 1, 'map 3')),
+  C.take(4),
+  // reduce(add),
+  log
+  // _ => console.timeEnd('')
+);
