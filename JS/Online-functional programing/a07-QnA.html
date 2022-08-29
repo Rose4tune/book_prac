@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>async / await</title>
+</head>
+
+<body>
+  <h1>async / await</h1>
+  <script type="module" src="./fx.js"></script>
+
+
+  <h2>동기 상황에서 에러 헨들링</h2>
+  <script type="module">
+    import * as fx from './fx.js';
+    var log = console.log;
+
+  </script>
+
+
+  <h2>비동기 상황에서 에러 헨들링(파이프라인의 이점)</h2>
+    <script type="module">
+    import {go, map, filter, take, L} from './fx.js';
+    var log = console.log;
+    
+    async function f9(list) {
+      try {
+        return await go(
+          list,
+          L.map(a => new Promise(resolve => {
+            resolve(JSON.parse(a));
+          })),
+          L.filter(a => a % 2),
+          take(3));
+      } catch (e) {
+        log(e, '----------hi!!');
+        return [];
+      }
+    }
+    f9(['0', '1', '2', '3', '{']).then(a =>log(a, 'f9')).catch(e => {
+      log('에러 헨들링', e);
+    });
+  </script>
+
+
+</body>
+
+</html>
