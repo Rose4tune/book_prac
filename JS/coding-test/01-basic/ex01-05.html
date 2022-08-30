@@ -1,0 +1,228 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>출력결과</title>
+  <style>
+    h3 {margin: 2rem 0 0}
+    .exams {max-width: 600px; margin: 0 1rem 3rem}
+    .exams dl {overflow: hidden; margin: .8rem 0 .5rem 1rem;}
+    .exams dt {float: left; font-weight: bold;}
+    .exams dd {margin-bottom: .5rem; padding-left: .5rem;}
+  </style>
+</head>
+
+<body>
+  <div class="exams">
+    <h3>세 수 중 최솟값</h3>
+    <dl>
+      <dt>문제 :</dt>
+      <dd>100이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는
+      프로그램을 작성하세요.(정렬을 사용하면 안됩니다)</dd>
+      <dt>입력 :</dt>
+      <dd><input class="input01" name="input0" type="text" value="2" placeholder="2"></dd>
+      <dd><input class="input01" name="input0" type="text" value="5" placeholder="5"></dd>
+      <dd><input class="input01" name="input0" type="text" value="1" placeholder="1"></dd>
+      <dt>답 :</dt>
+      <dd id="answer01"></dd>
+    </dl>
+    <script>
+      function solution(a, b, c) {
+        let answer;
+        if (a < b) answer = a
+        else answer = b;
+        if (c < answer) answer = c
+
+        return answer
+      }
+      document.getElementById('answer01')
+        .innerHTML = solution(2, 5, 1);
+    </script>
+  </div>
+
+
+  <div class="exams">
+    <h3></h3>
+    <dl>
+      <dt>문제 :</dt>
+      <dd></dd>
+      <dt>답 :</dt>
+      <dd id="answer"></dd>
+    </dl>
+    <script>
+      function solution(a, b, c) {
+        let answer;
+        return answer
+      }
+      document.getElementById('answer')
+        .innerHTML = solution();
+    </script>
+  </div>
+
+<!-- 
+  삼각형의 세 변의 길이를 a,b,c라고 하면 c가 가장 긴 변일 때,
+  a + b > c (나머지 두 변의 길이의 합이 가장 긴 변의 길이보다 길다)
+  그렇다면 a > c-b,  b > c-a 가 성립한다.
+  
+  또 c > 0 , c > b-a (c는 b보다 길기 때문에 당연히  b-a보다 길다)이므로
+  b-a < c < a + b
+  c-b < a, 또는 c-a < b 가 성립한다.
+-->
+
+
+
+<div class="exams">
+  <h3>삼각형 판별하기</h3>
+  <dl>
+    <dt>문제 :</dt>
+    <dd>길이가 서로 다른 A, B, C 세 개의 막대 길이가 주어지면 이 세 막대로 삼각형을 만들 수 있으면 “YES"를 출력하고, 만들 수 없으면 ”NO"를 출력한다.</dd>
+    <dt>입력 :</dt>
+    <dd><input class="input02" name="input1" type="text" value="13" placeholder="13"></dd>
+    <dd><input class="input02" name="input1" type="text" value="33" placeholder="33"></dd>
+    <dd><input class="input02" name="input1" type="text" value="17" placeholder="17"></dd>
+    <dt>답 :</dt>
+    <dd id="answer02"></dd>
+  </dl>
+  <script>
+    function solution(a, b, c) {
+      let answer = "YES", max;
+      let total = a + b + c;
+      if (a < b) max = b
+      else max = a;
+      if (max < c) max = c;
+
+      if ((total - max) <= max) answer = "NO";
+
+      return answer
+    }
+
+
+    const sol = solution(13, 33, 17);
+    document.getElementById('answer02').innerHTML = sol;
+  </script>
+</div>
+
+
+
+
+<div class="exams">
+  <h3></h3>
+  <dl>
+    <dt>문제 :</dt>
+    <dd></dd>
+    <dt>답 :</dt>
+    <dd id="answer"></dd>
+  </dl>
+  <script>
+    function solution(a, b, c) {
+      let answer;
+      return answer
+    }
+    document.getElementById('answer')
+      .innerHTML = solution();
+  </script>
+</div>
+
+
+
+
+
+
+<div class="exams">
+  <h3></h3>
+  <dl>
+    <dt>문제 :</dt>
+    <dd></dd>
+    <dt>답 :</dt>
+    <dd id="answer"></dd>
+  </dl>
+  <script>
+    function solution(a, b, c) {
+      let answer;
+      return answer
+    }
+    document.getElementById('answer')
+      .innerHTML = solution();
+  </script>
+</div>
+
+
+
+
+  <h3>연필다스 갯수</h3>
+  <p>연필 1 다스는 12자루입니다. 학생 1인당 연필을 1자루씩 나누어 준다고 할 때 N명이 학생수
+    를 입력하면 필요한 연필의 다스 수를 계산하는 프로그램을 작성하세요.</p>
+  <script>
+    function solution(n) {
+      let answer;
+      answer = Math.ceil(n / 12)
+      return answer;
+    }
+
+    console.log('Ex 03) 연필다스 갯수 : ' + solution(178));
+  </script>
+
+
+
+  <h3>1부터 N까지 합 출력하기</h3>
+  <p>자연수 N이 입력되면 1부터 N까지의 합을 출력하는 프로그램을 작성하세요.</p>
+  <script>
+    function solution(n) {
+      let answer = 0;
+      for (let i = 1; i < n; i++) {
+        answer += i
+      }
+      return answer;
+    }
+
+    console.log('Ex 04) 1~N 합 : ' + solution(178));
+  </script>
+
+
+
+  <h3>최솟값 구하기</h3>
+  <p>7개의 수가 주어지면 그 숫자 중 가장 작은 수를 출력하는 프로그램을 작성하세요.</p>
+  <script>
+    function solution(arr) {
+      let answer = arr[0];
+      for (let i = 1; i < arr.length; i++) {
+        if(arr[i] < answer) answer = arr[i];
+      }
+      return answer;
+    }
+
+    let arr=[54, 7, 16, 29, 23, 9, 11];
+    console.log('Ex 05)  : ' + solution(arr));
+  </script>
+
+
+
+  <h5></h5>
+  <p></p>
+  <script>
+    function solution(n) {
+      let answer;
+
+      return answer;
+    }
+
+    console.log('Ex)  : ' + solution(arr));
+  </script>
+
+
+
+<script>
+  const exambox = document.querySelectorAll('.exams');
+
+  for (const [i, ele] of exambox.entries()) {
+    ele.firstElementChild.prepend(`Ex ${(i < 9) ? `0${i + 1}` : (i + 1)}) `);
+  }
+
+  for (const [i, ele] of exambox.entries()) {
+    let inputs = ele.querySelectorAll('input');
+    inputs.forEach(ele => console.log(Number(ele.value)));
+  }
+</script>
+</body>
+
+</html>
