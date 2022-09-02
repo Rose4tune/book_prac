@@ -22,10 +22,9 @@
       }
       console.log(acc);
     }
-    f1(3, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    // f1(3, [1, 2, 3, 4, 5, 6, 7, 8, 9])
   </script>
   
-
   <h3>2. if를 filter로</h3>
   <h3>3. 값 변화 후 변수 할당을 map으로</h3>
   <h3>4. break을 take로</h3>
@@ -60,21 +59,20 @@
     //   console.log(acc);
     // }
 
-    function f2(limit, list){
+    function f1_1(limit, list){
       let acc = 0;
       for (const a of L.take(limit, L.map(a => a * a, L.filter(a => a % 2, list)))) {
         acc += a;
       }
       console.log(acc);
     }
-    f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    // f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9])
   </script>
-
 
   <h3>5. 축약 및 합산을 reduce로</h3>
   <script>
     const add = (a, b) => a + b
-    function f3(limit, list){
+    function f1_2(limit, list){
       console.log(
         _.reduce(add,//누적
         // 0, // 시작값(지정 안해도 무방)
@@ -84,9 +82,9 @@
         )
       );
     }
-    f3(2, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    // f1_2(2, [1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-    function f4(limit, list){
+    function f1_3(limit, list){
       console.log(
         _.go(
           list,
@@ -97,8 +95,111 @@
         )
       );
     }
-    f4(5, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+    // f1_3(5, [1, 2, 3, 4, 5, 6, 7, 8, 9])
   </script>
+
+  <h3>6. while => range</h3>
+  <h3>7. 효과를 each로 구분</h3>
+  <p>>> each를 사용하면 반드시 부수적인 효과, 영향이 있다.</p>
+  <script>
+    function f2(end){
+      let i = 0;
+      while (i < end) {
+        console.log(i)
+        ++i;
+      }
+    }
+    // f2(10)
+    
+    function f2_1(end){
+      _.each(console.log, L.range(end));
+    }
+    // f2_1(10)
+
+    
+    function f3(end){ //홀수 출력
+      let i = 1;
+      while (i < end) {
+        console.log(i)
+        i += 2;
+      }
+    }
+    // f3(10)
+    
+    function f3_1(end){
+      // _.each(console.log, L.range(1, end, 2)); // 시작, 총수, 간격
+      _.go(
+        L.range(1, end, 2),
+        _.each(console.log)
+      )
+    }
+    // f3_1(10)
+  </script>
+
+
+
+  <h3>추억의 별그리기</h3>
+  <script>
+
+    const join = sep => _.reduce((a, b) => `${a}${sep}${b}`)
+
+    _.go(
+      L.range(1, 5),//최대갯수
+      L.map(L.range),
+      L.map(L.map(_ => '*')),
+      L.map(join('')),
+      join('\n'),
+      console.log
+    )
+
+    _.go(
+      L.range(1, 5),
+      L.map(s => _.go(
+        L.range(s),
+        L.map(_ => '*'),
+        _.reduce((a, b) => `${a}${b}`)
+      )),
+      _.reduce((a, b) => `${a}\n${b}`),
+      console.log
+    )
+  </script>
+
+
+
+  <h3>추억의 구구단</h3>
+  <script>
+    _.go(
+      L.range(2, 10),
+      L.map(a => _.go(
+        L.range(1, 10),
+        L.map(b => `${a} x ${b} = ${a*b}`),
+        join('\n')
+      )),
+      join('\n\n'),
+      console.log
+    )
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h3></h3>
+  <script></script>
+
+
+  <h3></h3>
+  <h3></h3>
+  <script></script>
+  
 
 </body>
 </html>
