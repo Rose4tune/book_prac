@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>함수형 응용편 (reduce != 만능)</title>
+
+  <script src="../fx.js"></script>
+</head>
+<body>
+  <h3>1. (reduce + 복잡한 함수 + acc) X / (map + 간단한 함수 + reduce) O</h3>
+  <p>
+    reduce에 시작값인 acc를 넣는 것보다,<br>
+    애초에 reduce의 보조함수에 들어갈 값을 같은 형으로 넣는게<br>
+    더 간단한 함수 표현이 가능해진다.<br>
+    map으로 하나의 형만 남아있는 형태로 만든 후에 reduce로..<br>
+    >> 재사용성이 더 좋게하는 방법이다.
+  </p>
+  <script>
+    const users = [
+      {name:'AA', age: 35},
+      {name:'BB', age: 52},
+      {name:'CC', age: 13},
+      {name:'DD', age: 25},
+      {name:'EE', age: 74}
+    ];
+    console.log(
+      _.reduce((total, u) => total + u.age, 0, users)
+    )
+
+    const add = (a, b) => a + b;
+    const ages = L.map(u => u.age);
+
+    console.log(
+      _.reduce(add, L.map(u => u.age, users))
+    )
+    console.log(
+      _.reduce(add, ages(users))
+    )
+    // console.log(
+    //   _.reduce((a, b) => a + b, [1, 2, 3])
+    // )
+  </script>
+  
+
+  <h3>2. reduce 한개 보다 map + filter + reduce </h3>
+  <script>
+    
+    console.log(
+      _.reduce((total, u) => { return u.age >= 30 ? total : total + u.age
+        // if(u.age >= 30) return total;
+        // return total + u.age;
+      },
+      0,
+      users)
+    )
+
+    console.log(
+      _.reduce(add,
+        L.map(u => u.age,
+          L.filter(u => u.age < 30 ,users)))
+    )
+    
+    console.log(
+      _.reduce(add,
+        L.filter(n => n < 30,
+          L.map(u => u.age ,users)))
+    )
+  </script>
+
+  <h3>3. query, queryToObject</h3>
+  <script>
+    const obj1 = {
+      a: 1,
+      b: undefined,
+      c: 'CC',
+      d: 'DD'
+    };
+    
+    function query1(obj) {
+      let res = '';
+      for (const k in obj) {
+        const v = obj[k];
+        if(v == undefined) continue;
+        if(res != '') res += ' & ';
+        res += k + '=' + v;
+      }
+      return res;
+    }
+    console.log(query1(obj1));
+
+    
+    function query2(obj) {
+      return Object
+        .entries(obj1) // [key, value]로 전체 배열로 들어옴
+        .reduce((query, [k, v], i) => {
+          if(v === undefined) return query;
+          return query + (i > 0) + k + '=' + v;
+        }, '')
+
+    }
+    console.log(query2(obj1));
+  </script>
+
+
+</body>
+</html>
