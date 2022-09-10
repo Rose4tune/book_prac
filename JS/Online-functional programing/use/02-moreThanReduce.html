@@ -69,6 +69,10 @@
     )
   </script>
 
+
+
+
+
   <h3>3. query, queryToObject</h3>
   <script>
     const obj1 = {
@@ -78,6 +82,7 @@
       d: 'DD'
     };
     
+
     function query1(obj) {
       let res = '';
       for (const k in obj) {
@@ -96,13 +101,53 @@
         .entries(obj1) // [key, value]로 전체 배열로 들어옴
         .reduce((query, [k, v], i) => {
           if(v === undefined) return query;
-          return query + (i > 0) + k + '=' + v;
+          return query + (i > 0 ? ' & ' : '') + k + '=' + v;  
         }, '')
 
     }
     console.log(query2(obj1));
+    
+
+    const join = _.curry((sep, iter) =>
+      _.reduce((a, b) => `${a}${sep}${b}`, iter));
+    
+
+    const  query3 = obj =>
+      // _.reduce((a, b) => `${a} & ${b}`,
+      join('&',
+        _.map(([k, v]) => `${k}=${v}`,
+          // _.filter(([k, v]) => v != undefined,
+          _.reject(([_, v]) => v === undefined,
+            Object.entries(obj)))
+      );
+    console.log(query3(obj1));
+
+
+    const query4 = _.pipe(
+      Object.entries,
+      L.reject(([_, v]) => v === undefined),
+      L.map(join('=')),
+      join('&')
+    )
+    console.log(query4(obj1));
+  console.clear();
+
   </script>
 
+
+
+    
+  <h3>4.queryToObject</h3>
+  <script>
+    const split = _.curry((sep, str) => str.split(sep));
+    const queryToObject = _.pipe(
+      split('&'),
+      L.map(split('=')),
+      L.map(([k, v]) => ({[k]: v})),
+      _.reduce(Object.assign)
+    )
+    console.log(queryToObject('a=1&c=CC&d=DD'))
+  </script>
 
 </body>
 </html>
