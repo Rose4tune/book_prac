@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>함수형 응용편 (안전한 합성)</title>
+
+  <script src="../fx.js"></script>
+</head>
+<body>
+  <h3>1. map으로 합성하기</h3>
+  <p>함수의 인자값이 있을 때, 없을 때 모두 에러없이 중첩함수가 실행될 수 있게 할 것인가?</p>
+  <script>
+    const f = x => x + 10;
+    const g = x => x - 5;
+    const fg = x => f(g(x));
+
+    _.go(
+      10,
+      fg,
+      console.log
+    );
+
+    _.go(
+      [],
+      L.map(fg),
+      _.each(console.log)
+    );
+
+    _.go(
+      [10],
+      L.map(fg),
+      _.each(console.log)
+    );
+
+    console.clear()
+  </script>
+  
+
+  <h3>2. find 대신 L.filter 써보기</h3>
+  <h4>* find</h4>
+  <p>
+     - 특정 값을 평가를 해서 깨서 특정 결과를 만듬<br>
+     - if 또는 try/catch 로 특정 값이 없을 경우에 대한 처리를 해주어야함<br>
+     - 예외 상황에 대한 위험이 생김     
+  </p>
+  <h4>* filter</h4>
+  <p>- filter 와 take(1)를 같이 사용하면 find와 시간복잡도는 같으면서도 안전한 함수합성을 할 수 있다.</p>
+  <script>
+    const users = [
+      {name:'AA', age: 35},
+      // {name:'BB', age: 52},
+      {name:'CC', age: 13},
+      {name:'DD', age: 25},
+      {name:'EE', age: 74}
+    ];
+
+    try {
+      const user = _.find(u => u.name == 'BB', users);
+      // if (user) {
+        console.log(user.age)
+      // }
+    } catch (e) {
+    }
+
+    _.each(console.log,
+      L.take(1,
+        L.filter(u => u.name == 'BB', users)));
+
+    _.go(users,
+      L.filter(u => u.name == 'AA'),
+      L.map(u => u.age),
+      L.take(1),
+      _.each(console.log)
+    )
+  </script>
+
+</body>
+</html>
