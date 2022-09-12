@@ -1,0 +1,90 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>출력결과</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>[섹션 ] </h1>
+  
+
+
+
+  
+  <!-- 문제  -->
+  <div class="exams">
+    <h3></h3>
+    <dl>
+      <dt>문제</dt>
+      <dd></dd>
+
+      <dt>입력</dt>
+      <dd></dd>
+
+      <dt>출력</dt>
+      <dd></dd>
+
+      <dt>예제</dt>
+      <dd></dd>
+      <dd id="ex"></dd>
+      <dd>
+        <span id="ex-1"></span> / 
+        <span id="ex-2"></span>
+      </dd>
+
+      <dt>정답</dt>
+      <dd id="as"></dd>
+      <dd>
+        <span id="as-1"></span> / 
+        <span id="as-2"></span>
+      </dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex = [];
+      const ex_1 = document.getElementById('ex-1').innerText;
+      const ex_2 = document.getElementById('ex-2').innerText;
+      document.getElementById('as').innerHTML = solution(ex);
+      document.getElementById('as-1').innerHTML = solution(ex_1);
+      document.getElementById('as-2').innerHTML = solution(ex_2);
+    </script>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    for (const [i, ele] of document.querySelectorAll('.exams').entries()) {
+      ele.firstElementChild.prepend(`${(i < 9) ? `0${i + 1}` : (i + 1)}) `);
+    }
+  </script>
+</body>
+
+</html>

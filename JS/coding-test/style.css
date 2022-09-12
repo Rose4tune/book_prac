@@ -1,0 +1,44 @@
+h3 {
+  margin: 2rem 0 0
+}
+
+.exams {
+  max-width: 600px;
+  margin: 0 1rem 3rem
+}
+
+.exams dl {
+  overflow: hidden;
+  margin: .8rem 0 .5rem 1rem;
+}
+
+.exams dt {
+  float: left;
+  font-weight: bold;
+}
+
+.exams dt::after {
+  display: inline-block;
+  content: ':';
+  margin-left: .7rem
+}
+
+.exams dd {
+  margin-bottom: .5rem;
+  padding-left: 1rem;
+}
+
+table {
+  margin: .5rem 0;
+  border-collapse: collapse;
+  text-align: center;
+}
+table * {
+  padding: .2rem 1rem;
+  border:1px solid black;
+}
+
+img {
+  display: block;
+  margin: 1rem 0;
+}

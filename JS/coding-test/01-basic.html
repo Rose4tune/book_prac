@@ -1,0 +1,701 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>1. 기본문제</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>[섹션 1] 기본문제 풀이</h1>
+
+  <!-- 문제 1 -->
+  <div class="exams">
+    <h3>세 수 중 최솟값</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>100이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는
+        프로그램을 작성하세요.(정렬을 사용하면 안됩니다)</dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 100이하의 세 자연수가 입력된다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 번째 줄에 가장 작은 수를 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>6, 5, 11</dd>
+
+      <dt>정답</dt>
+      <dd id="as1"></dd>
+    </dl>
+    <script>
+      function solution(a, b, c) {
+        let answer;
+        if (a < b) answer = a
+        else answer = b;
+        if (c < answer) answer = c
+
+        return answer
+      }
+      document.getElementById('as1').innerHTML = solution(6, 5, 11);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 2
+
+  삼각형의 세 변의 길이를 a,b,c라고 하면 c가 가장 긴 변일 때,
+  a + b > c (나머지 두 변의 길이의 합이 가장 긴 변의 길이보다 길다)
+  그렇다면 a > c-b,  b > c-a 가 성립한다.
+  
+  또 c > 0 , c > b-a (c는 b보다 길기 때문에 당연히  b-a보다 길다)이므로
+  b-a < c < a + b
+  c-b < a, 또는 c-a < b 가 성립한다.
+-->
+  <div class="exams">
+    <h3>삼각형 판별하기</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>길이가 서로 다른 A, B, C 세 개의 막대 길이가 주어지면 이 세 막대로 삼각형을 만들 수 있으면 “YES"를 출력하고, 만들 수 없으면 ”NO"를 출력한다.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 100이하의 서로 다른 A, B, C 막대의 길이가 주어진다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 번째 줄에 “YES", "NO"를 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>6 7 11 / 13 33 17</dd>
+
+      <dt>정답</dt>
+      <dd>
+        <span id="as2-1"></span> / 
+        <span id="as2-2"></span>
+      </dd>
+    </dl>
+    <script>
+      function solution(a, b, c) {
+        let answer = "YES", max;
+        let total = a + b + c;
+        if (a < b) max = b
+        else max = a;
+        if (max < c) max = c;
+
+        if ((total - max) <= max) answer = "NO";
+
+        return answer
+      }
+      document.getElementById('as2-1').innerHTML = solution(6, 7, 11);
+      document.getElementById('as2-2').innerHTML = solution(13, 33, 17);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 3 -->
+  <div class="exams">
+    <h3>연필다스 갯수</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>연필 1 다스는 12자루입니다. 학생 1인당 연필을 1자루씩 나누어 준다고 할 때 N명이 학생수
+        를 입력하면 필요한 연필의 다스 수를 계산하는 프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 1000 이하의 자연수 N이 입력된다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 번째 줄에 필요한 다스 수를 출력합니다.</dd>
+
+      <dt>예제</dt>
+      <dd>
+        <span id="ex3-1">25</span> / 
+        <span id="ex3-2">178</span>
+      </dd>
+
+      <dt>정답</dt>
+      <dd>
+        <span id="as3-1"></span> / 
+        <span id="as3-2"></span>
+      </dd>
+    </dl>
+    <script>
+      function solution(n) {
+        let answer;
+        answer = Math.ceil(n / 12)
+        return answer;
+      }
+      const ex3_1 = Number(document.getElementById('ex3-1').innerText);
+      const ex3_2 = Number(document.getElementById('ex3-2').innerText);
+      document.getElementById('as3-1').innerHTML = solution(ex3_1);
+      document.getElementById('as3-2').innerHTML = solution(ex3_2);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 4 -->
+  <div class="exams">
+    <h3>1부터 N까지 합 출력하기</h3>
+    <dl>
+      <dt>문제 :</dt>
+      <dd>자연수 N이 입력되면 1부터 N까지의 합을 출력하는 프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 20이하의 자연수 N이 입력된다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 번째 줄에 1부터 N까지의 합을 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>
+        <span id="ex4-1">6</span> / 
+        <span id="ex4-2">21</span>
+      </dd>
+
+      <dt>정답</dt>
+      <dd>
+        <span id="as4-1"></span> / 
+        <span id="as4-2"></span>
+      </dd>
+    </dl>
+    <script>
+      function solution(n) {
+        let answer = 0;
+        for (let i = 1; i < n; i++) {
+          answer += i
+        }
+        return answer;
+      }
+      const ex4_1 = Number(document.getElementById('ex4-1').innerText);
+      const ex4_2 = Number(document.getElementById('ex4-2').innerText);
+      document.getElementById('as4-1').innerHTML = solution(ex4_1);
+      document.getElementById('as4-2').innerHTML = solution(ex4_2);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 5 -->
+  <div class="exams">
+    <h3>최솟값 구하기</h3>
+    <dl>
+      <dt>문제 :</dt>
+      <dd>7개의 수가 주어지면 그 숫자 중 가장 작은 수를 출력하는 프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 7개의 수가 주어진다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 번째 줄에 가장 작은 값을 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>5 3 7 11 2 15 17</dd>
+
+      <dt>정답</dt>
+      <dd id="as5"></dd>
+    </dl>
+    <script>
+      function solution(arr) {
+        let answer = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+          if (arr[i] < answer) answer = arr[i];
+        }
+        return answer;
+      }
+      const ex5 = [5, 3, 7, 11, 2, 15, 17];
+      document.getElementById('as5').innerHTML = solution(ex5);
+    </script>
+  </div>
+
+
+
+
+
+
+  <!-- 문제 6 -->
+  <div class="exams">
+    <h3>홀수</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>
+        7개의 자연수가 주어질 때, 이들 중 홀수인 자연수들을 모두 골라 그 합을 구하고, 고른 홀수들
+        중 최소값을 찾는 프로그램을 작성하세요.<br><br>
+        예를 들어, 7개의 자연수 12, 77, 38, 41, 53, 92, 85가 주어지면<br>
+        이들 중 홀수는 77, 41, 53, 85이므로<br>
+        그 합은 77 + 41 + 53 + 85 = 256 이 되고,<br>
+        41 < 53 < 77 < 85 이므로 홀수들 중 최소값은 41이 된다.
+      </dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 자연수 7개가 주어진다. 주어지는 자연수는 100보다 작다. 홀수가 한 개 이상
+        반드시 존재한다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫째 줄에 홀수들의 합을 출력하고, 둘째 줄에 홀수들 중 최소값을 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>12 77 38 41 53 92 85</dd>
+
+      <dt>정답</dt>
+      <dd id="as6"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex6 = [12, 77, 38, 41, 53, 92, 85];
+      document.getElementById('as6').innerHTML = solution(ex6);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 7 -->
+  <div class="exams">
+    <h3>10부제</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>
+        서울시는 6월 1일부터 교통 혼잡을 막기 위해서 자동차 10부제를 시행한다. 자동차 10부제는
+        자동차 번호의 일의 자리 숫자와 날짜의 일의 자리 숫자가 일치하면 해당 자동차의 운행을 금
+        지하는 것이다. 예를 들어, 자동차 번호의 일의 자리 숫자가 7이면 7일, 17일, 27일에 운행하
+        지 못한다. 또한, 자동차 번호의 일의 자리 숫자가 0이면 10일, 20일, 30일에 운행하지 못한다.
+        <br><br>
+        여러분들은 일일 경찰관이 되어 10부제를 위반하는 자동차의 대수를 세는 봉사활동을 하려고
+        한다. 날짜의 일의 자리 숫자가 주어지고 7대의 자동차 번호의 끝 두 자리 수가 주어졌을 때
+        위반하는 자동차의 대수를 출력하는 프로그램을 작성하세요.
+      </dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에는 날짜의 일의 자리 숫자가 주어지고 두 번째 줄에는 7대의 자동차 번호의 끝 두 자
+        리 숫자가 주어진다.</dd>
+
+      <dt>출력</dt>
+      <dd>주어진 날짜와 자동차의 일의 자리 숫자를 보고 10부제를 위반하는 차량의 대수를 출력합니다.</dd>
+
+      <dt>예제</dt>
+      <dd>3 - 25 23 11 47 53 17 33 / 0 - 12 20 54 30 87 91 30</dd>
+
+      <dt>정답</dt>
+      <dd>
+        <span id="as7-1"></span> / 
+        <span id="as7-2"></span>
+      </dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex7_1 = [];
+      const ex7_2 = [];
+      document.getElementById('as7-1').innerHTML = solution(ex7_1);
+      document.getElementById('as7-2').innerHTML = solution(ex7_2);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 8 -->
+  <div class="exams">
+    <h3>일곱 난쟁이</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>
+        왕비를 피해 일곱 난쟁이들과 함께 평화롭게 생활하고 있던 백설공주에게 위기가 찾아왔다.
+        일과를 마치고 돌아온 난쟁이가 일곱 명이 아닌 아홉 명이었던 것이다.<br>
+        아홉 명의 난쟁이는 모두 자신이 "백설 공주와 일곱 난쟁이"의 주인공이라고 주장했다. 뛰어난
+        수학적 직관력을 가지고 있던 백설공주는, 다행스럽게도 일곱 난쟁이의 키의 합이 100이 됨을
+        기억해 냈다.<br>
+        아홉 난쟁이의 키가 주어졌을 때, 백설공주를 도와 일곱 난쟁이를 찾는 프로그램을 작성하시오.
+      </dd>
+
+      <dt>입력</dt>
+      <dd>아홉 개의 줄에 걸쳐 난쟁이들의 키가 주어진다. 주어지는 키는 100을 넘지 않는 자연수이며,
+        아홉 난쟁이의 키는 모두 다르며, 가능한 정답이 여러 가지인 경우에는 아무거나 출력한다.</dd>
+
+      <dt>출력</dt>
+      <dd>입력된 순서대로 일곱 난쟁이의 키를 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>20 7 23 19 10 15 25 8 13</dd>
+
+      <dt>정답</dt>
+      <dd id="as8"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex8 = [20, 7, 23, 19, 10, 15, 25, 8, 13];
+      document.getElementById('as8').innerHTML = solution(ex8);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 9 -->
+  <div class="exams">
+    <h3>A를 #으로</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>대문자로 이루어진 영어단어가 입력되면 단어에 포함된 ‘A'를 모두 ’#‘으로 바꾸어 출력하는
+        프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 번째 줄에 문자열이 입력된다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 번째 줄에 바뀐 단어를 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd id="ex9">BANANA</dd>
+
+      <dt>정답</dt>
+      <dd id="as9"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex9 = document.getElementById('ex9').innerText;
+      document.getElementById('as9').innerHTML = solution(ex9);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 10 -->
+  <div class="exams">
+    <h3>문자 찾기</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>
+        한 개의 문자열을 입력받고, 특정 문자를 입력받아 해당 특정문자가 입력받은 문자열에 몇 개
+        존재하는지 알아내는 프로그램을 작성하세요. 문자열의 길이는 100을 넘지 않습니다.
+      </dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 문자열이 주어지고, 두 번째 줄에 문자가 주어진다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 해당 문자의 개수를 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd><span id="ex10">COMPUTERPROGRAMMING</span> - R</dd>
+
+      <dt>정답</dt>
+      <dd id="as10"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex10 = document.getElementById('ex10').innerText;
+      document.getElementById('as10').innerHTML = solution(ex10);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 11 -->
+  <div class="exams">
+    <h3>대문자 찾기</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>한 개의 문자열을 입력받아 해당 문자열에 알파벳 대문자가 몇 개 있는지 알아내는 프로그램
+        을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 문자열이 입력된다. 문자열의 길이는 100을 넘지 않습니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 대문자의 개수를 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd id="ex11">KoreaTimeGood</dd>
+
+      <dt>정답</dt>
+      <dd id="as11"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex11 = document.getElementById('ex11').innerText;
+      document.getElementById('as11').innerHTML = solution(ex11);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 12 -->
+  <div class="exams">
+    <h3>대문자로 통일</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>대문자와 소문자가 같이 존재하는 문자열을 입력받아 대문자로 모두 통일하여 문자열을 출력
+        하는 프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 문자열이 입력된다. 문자열의 길이는 100을 넘지 않습니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 대문자로 통일된 문자열이 출력된다.</dd>
+
+      <dt>예제</dt>
+      <dd id="ex12">ItisTimeToStudy</dd>
+
+      <dt>정답</dt>
+      <dd id="as12"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex12 = document.getElementById('ex12').innerText;
+      document.getElementById('as12').innerHTML = solution(ex12);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 13 -->
+  <div class="exams">
+    <h3>대소문자 변환</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>대문자와 소문자가 같이 존재하는 문자열을 입력받아 대문자는 소문자로 소문자는 대문자로
+        변환하여 출력하는 프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 문자열이 입력된다. 문자열의 길이는 100을 넘지 않습니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 대문자는 소문자로, 소문자는 대문자로 변환된 문자열을 출력합니다.</dd>
+
+      <dt>예제</dt>
+      <dd id="ex13">StuDY</dd>
+
+      <dt>정답</dt>
+      <dd id="as13"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex13 = document.getElementById('ex13').innerText;
+      document.getElementById('as13').innerHTML = solution(ex13);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 14 -->
+  <div class="exams">
+    <h3>가장 긴 문자열</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>N개의 문자열이 입력되면 그 중 가장 긴 문자열을 출력하는 프로그램을 작성하세요.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 자연수 N이 주어진다.(3<=N<=30)<br>
+        두 번째 줄부터 N개의 문자열이 주어진다. 문자열의 길이는 100을 넘지 않습니다.
+        각 문자열의 길이는 서로 다릅니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 가장 긴 문자열을 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>5, teacher, time, student, beautiful, good</dd>
+
+      <dt>정답</dt>
+      <dd id="as14"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex14 = [5, 'teacher', 'time', 'student', 'beautiful', 'good'];
+      document.getElementById('as14').innerHTML = solution(ex14);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 15 -->
+  <div class="exams">
+    <h3>가운데 문자 출력(substring, substr)</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>소문자로 된 단어(문자열)가 입력되면 그 단어의 가운데 문자를 출력하는 프로그램을 작성하세
+        요. 단 단어의 길이가 짝수일 경우 가운데 2개의 문자를 출력합니다.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 문자열이 입력된다. 문자열의 길이는 100을 넘지 않습니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 가운데 문자를 출력합니다.</dd>
+
+      <dt>예제</dt>
+      <dd>
+        <span id="ex15-1">study</span> / 
+        <span id="ex15-2">good</span>
+      </dd>
+
+      <dt>정답</dt>
+      <dd>
+        <span id="as15-1"></span> / 
+        <span id="as15-2"></span>
+      </dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex15_1 = document.getElementById('ex15-1').innerText;
+      const ex15_2 = document.getElementById('ex15-2').innerText;
+      document.getElementById('as15-1').innerHTML = solution(ex15_1);
+      document.getElementById('as15-2').innerHTML = solution(ex15_2);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 16 -->
+  <div class="exams">
+    <h3>중복문자제거(indexOf)</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>소문자로 된 한개의 문자열이 입력되면 중복된 문자를 제거하고 출력하는 프로그램을 작성하
+        세요. 제거된 문자열의 각 문자는 원래 문자열의 순서를 유지합니다.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 문자열이 입력됩니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄에 중복문자가 제거된 문자열을 출력합니다.</dd>
+
+      <dt>예제</dt>
+      <dd id="ex16">ksekkset</dd>
+
+      <dt>정답</dt>
+      <dd id="as16"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex16 = document.getElementById('ex16').innerText;
+      document.getElementById('as16').innerHTML = solution(ex16);
+    </script>
+  </div>
+
+
+
+
+
+  <!-- 문제 17 -->
+  <div class="exams">
+    <h3>중복단어제거</h3>
+    <dl>
+      <dt>문제</dt>
+      <dd>N개의 문자열이 입력되면 중복된 문자열은 제거하고 출력하는 프로그램을 작성하세요.
+        출력하는 문자열은 원래의 입력순서를 유지합니다.</dd>
+
+      <dt>입력</dt>
+      <dd>첫 줄에 자연수 N이 주어진다.(3<=N<=30)<br>
+        두 번째 줄부터 N개의 문자열이 주어진다. 문자열의 길이는 100을 넘지 않습니다.</dd>
+
+      <dt>출력</dt>
+      <dd>첫 줄부터 중복이 제거된 문자열을 차례로 출력한다.</dd>
+
+      <dt>예제</dt>
+      <dd>5, good, time, good, time, student</dd>
+
+      <dt>정답</dt>
+      <dd id="as17"></dd>
+    </dl>
+    <script>
+      function solution() {
+        let answer;
+        return answer
+      }
+      const ex17 = [5, 'good', 'time', 'good', 'time', 'student'];
+      document.getElementById('as17').innerHTML = solution(ex17);
+    </script>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    for (const [i, ele] of document.querySelectorAll('.exams').entries()) {
+      ele.firstElementChild.prepend(`${(i < 9) ? `0${i + 1}` : (i + 1)}) `);
+    }
+  </script>
+</body>
+
+</html>
