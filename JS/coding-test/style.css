@@ -42,3 +42,13 @@ img {
   display: block;
   margin: 1rem 0;
 }
+
+
+.inline-flex {
+  display: inline-flex;
+}
+.inline-flex span {
+  display: block;
+  padding: 0 .5rem;
+  border:1px solid gray;
+}
