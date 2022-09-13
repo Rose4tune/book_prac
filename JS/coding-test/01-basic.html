@@ -14,9 +14,7 @@
     <h3>세 수 중 최솟값</h3>
     <dl>
       <dt>문제</dt>
-      <dd>
-        100이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는 프로그램을 작성하세요. (정렬을 사용하면 안됩니다)
-      </dd>
+      <dd>100이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는 프로그램을 작성하세요. (정렬을 사용하면 안됩니다)</dd>
 
       <dt>입력</dt>
       <dd>첫 번째 줄에 100이하의 세 자연수가 입력된다.</dd>
@@ -32,10 +30,16 @@
     </dl>
     <script>
       function solution(a, b, c) {
-        let answer;
-        if (a < b) answer = a
-        else answer = b;
-        if (c < answer) answer = c
+        let answer = a;
+
+        // if (a < b) answer = a
+        // else answer = b;
+        // if (c < answer) answer = c
+
+        const nums = [b, c];
+        for (const el of nums) {
+          if(el < answer) answer = el
+        }
 
         return answer
       }
@@ -240,9 +244,7 @@
       </dd>
 
       <dt>입력</dt>
-      <dd>
-        첫 번째 줄에 자연수 7개가 주어진다. 주어지는 자연수는 100보다 작다. 홀수가 한 개 이상 반드시 존재한다.
-      </dd>
+      <dd>첫 번째 줄에 자연수 7개가 주어진다. 주어지는 자연수는 100보다 작다. 홀수가 한 개 이상 반드시 존재한다.</dd>
 
       <dt>출력</dt>
       <dd>첫째 줄에 홀수들의 합을 출력하고, 둘째 줄에 홀수들 중 최소값을 출력한다.</dd>
@@ -254,9 +256,16 @@
       <dd id="as6"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(arr) {
+        let answer = [];
+        for (const a of arr) {
+          if (a % 2) answer.push(a);
+        }
+        let min = answer[0];
+        for (let i = 1; i < answer.length; i++) {
+          if (answer[i] < min) min = answer[i];
+        }
+        return `홀수 (${answer}) / 최소수 (${min})`
       }
       const ex6 = [12, 77, 38, 41, 53, 92, 85];
       document.getElementById('as6').innerHTML = solution(ex6);
