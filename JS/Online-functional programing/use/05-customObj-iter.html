@@ -10,19 +10,45 @@
 </head>
 <body>
   <h3>1. map, set, NodeList</h3>
+  <script>
+    let m = new Map();
+    m.set('a', 1);
+    m.set('b', 2);
+    m.set('c', 3);
+
+    _.go(
+      m,
+      L.filter(([k, v]) => v % 2),
+      // _.each(console.log)
+      _.takeAll,
+      entries => new Map(entries),
+      console.log
+    )
+
+    let s = new Set();
+    s.add(10);
+    s.add(20);
+    s.add(30);
+
+    const add = (a, b) => a + b;
+    
+    console.log(_.reduce(add, s))
+  </script>
+
+
   <h3>2. Model, Collection 클래스 만들어서 iter 지원하기</h3>
+  <script>
+  </script>
+
+
   <h3>3. Product, Products - 메서드 함수형으로 구현하기</h3>
   <script>
   </script>
   
 
-  <script>
-  </script>
 
 
 
-  <script>
-  </script>
 
 
 
