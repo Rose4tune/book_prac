@@ -32,9 +32,13 @@
       <dd id="as1"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(arr) {
+        let res = [];
+        res.push(arr[0])
+        for (let i = 0; i < (arr.length-1); i++) {
+          if(arr[i] < arr[i+1]) res.push(arr[i+1])
+        }
+        return res
       }
       const ex1 = [7, 3, 9, 5, 6, 12];
       document.getElementById('as1').innerHTML = solution(ex1);
@@ -67,9 +71,15 @@
       <dd id="as2"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(arr) {
+        let res = 1, max=arr[0];
+        for (let i = 1; i < arr.length; i++) {
+          if(arr[i] > max) {
+            res++;
+            max = arr[i];
+          }
+        }
+        return res
       }
       const ex2 = [130, 135, 148, 140, 145, 150, 150, 153];
       document.getElementById('as2').innerHTML = solution(ex2);
@@ -93,7 +103,7 @@
         예를 들어 N=5이면<br>
         <table>
           <tr>
-            <td>희수</td>
+            <td>회수</td>
             <td>1</td>
             <td>2</td>
             <td>3</td>
@@ -149,13 +159,25 @@
       <dd id="as3"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      // 1:가위, 2:바위, 3:보
+      // 한명을 기준으로 잡고 단순하게 생각해보기
+      function solution(a, b) {
+        let res='';
+        for (let i = 0; i < a.length; i++) {
+          if(a[i] == b[i]) res += 'D'
+          else if(
+            a[i] == 1 && b[i] == 3 ||
+            a[i] == 2 && b[i] == 1 ||
+            a[i] == 3 && b[i] == 2
+            ) res += 'A'
+          else res += 'B'
+        }
+
+        return res
       }
-      const ex3_a = [];
-      const ex3_b = [];
-      document.getElementById('as3').innerHTML = solution(ex3);
+      const ex3_a = [2, 3, 3, 1, 3];
+      const ex3_b = [1, 1, 2, 2, 3];
+      document.getElementById('as3').innerHTML = solution(ex3_a, ex3_b);
     </script>
   </div>
 
@@ -169,7 +191,16 @@
     <dl>
       <dt>문제</dt>
       <dd>
-        OX 문제는 맞거나 틀린 두 경우의 답을 가지는 문제를 말한다. 여러 개의 OX 문제로 만들어진 시험에서 연속적으로 답을 맞히는 경우에는 가산점을 주기 위해서 다음과 같이 점수 계산을 하기로 하였다. 1번 문제가 맞는 경우에는 1점으로 계산한다. 앞의 문제에 대해서는 답을 틀리다가 답이 맞는 처음 문제는 1점으로 계산한다. 또한, 연속으로 문제의 답이 맞는 경우에서 두 번째 문제는 2점, 세 번째 문제는 3점, ..., K번째 문제는 K점으로 계산한다. 틀린 문제는 0점으로 계산한다.<br>
+        OX 문제는 맞거나 틀린 두 경우의 답을 가지는 문제를 말한다. 여러 개의 OX 문제로 만들어진 시험에서 연속적으로 답을 맞히는 경우에는 가산점을 주기 위해서 다음과 같이 점수 계산을 하기로 하였다.<br><br>
+
+        1번 문제가 맞는 경우에는 1점으로 계산한다.<br>
+        앞의 문제에 대해서는 답을 틀리다가 답이 맞는 처음 문제는 1점으로 계산한다.<br><br>
+
+        또한, 연속으로 문제의 답이 맞는 경우에서 두 번째 문제는 2점,<br>
+        세 번째 문제는 3점, ...,<br>
+        K번째 문제는 K점으로 계산한다.<br>
+        틀린 문제는 0점으로 계산한다.<br><br>
+
         예를 들어, 아래와 같이 10 개의 OX 문제에서 답이 맞은 문제의 경우에는 1로 표시하고, 틀린 경우에는 0으로 표시하였을 때, 점수 계산은 아래 표와 같이 계산되어, 총 점수는 1+1+2+3+1+2=10 점이다.<br>
         1 0 1 1 1 0 0 1 1 0<br>
         <table>
@@ -218,9 +249,17 @@
       <dd id="as4"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      // cnt 사용하기
+      function solution(score) {
+        let res = 0, cnt = 0;
+        for (const s of score) {
+          if(s == 1) {
+            cnt++;
+            res += cnt
+          }
+          else cnt = 0
+        }
+        return res
       }
       const ex4 = [1, 0, 1, 1, 1, 0, 0, 1, 1, 0];
       document.getElementById('as4').innerHTML = solution(ex4);
@@ -255,9 +294,17 @@
       <dd id="as5"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      // 전부 1등으로 초기화 해놓고
+      // 나보다 높은 사람 있으면 ++ 시킴
+      function solution(arr) {
+        let n = arr.length;
+        let res = Array.from({length:n}, () => 1);
+        for (let i = 0; i < n; i++) {
+          for (let j = 0; j < n; j++) {
+            if(arr[j] > arr[i]) res[i]++
+          }
+        }
+        return res
       }
       const ex5 = [87, 89, 92, 100, 76];
       document.getElementById('as5').innerHTML = solution(ex5);
@@ -337,13 +384,37 @@
       <dd id="as6"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(arr) {
+        let res = Number.MIN_SAFE_INTEGER;
+        let n = arr.length;
+        let sum1 = sum2 = 0;
+
+        // i = 행 (가로)
+        // j = 열 (세로)
+        for (let i = 0; i < n; i++) {
+          sum1 = sum2 = 0;
+          for (let j = 0; j < n; j++) {
+            sum1 += arr[i][j];
+            sum2 += arr[j][i];
+          }
+          res = Math.max(res, sum1, sum2);
+        }
+
+        // 대각선
+        sum1 = sum2 = 0;
+        for (let i = 0; i < n; i++) {
+          sum1 += arr[i][i]
+          sum2 += arr[i][n - i - 1]
+        }
+          res = Math.max(res, sum1, sum2);
+
+        return res
       }
-      const ex6 = [];
-      const ex6_1 = document.getElementById('ex6-1').innerText;
-      const ex6_2 = document.getElementById('ex6-2').innerText;
+      const ex6 = [[10, 13, 10, 12, 15],
+                   [12, 39, 30, 23, 11],
+                   [11, 25, 50, 53, 15],
+                   [19, 27, 29, 37, 27],
+                   [19, 13, 30, 13, 19]];
       document.getElementById('as6').innerHTML = solution(ex6);
     </script>
   </div>
@@ -385,13 +456,24 @@
       <dd id="as7"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(arr) {
+        let res;
+        let n = arr.length;
+        let pos = [];
+        for (let i = 0; i < n; i++) {
+          for (let j = i-1; j < i+1; j++) {
+            pos.push(arr[i][j])
+          }
+          console.log(pos)
+        }
+
+        return res
       }
-      const ex7 = [];
-      const ex7_1 = document.getElementById('ex7-1').innerText;
-      const ex7_2 = document.getElementById('ex7-2').innerText;
+      const ex7 = [[5, 3, 7, 2, 3],
+                   [3, 7, 1, 6, 1],
+                   [7, 2, 5, 3, 4],
+                   [4, 3, 6, 4, 1],
+                   [8, 7, 3, 5, 2]];
       document.getElementById('as7').innerHTML = solution(ex7);
     </script>
   </div>
