@@ -177,7 +177,7 @@
     <script>
       function solution(n) {
         let res = 0;
-        for (let i = 1; i <= n; i++) {
+        for (let i = 0; i <= n; i++) {
           res += i
         }
         return res;
@@ -323,12 +323,12 @@
       </dd>
     </dl>
     <script>
-      function solution(date, cars) {
-        let res = [];
+      function solution(day, cars) {
+        let res = 0;
         for (const a of cars) {
-          if(a % 10 == date) res.push(a)
+          if(a % 10 == day) res++
         }
-        return res.length + '대'
+        return res + '대'
       }
       const ex7_1 = document.getElementById('ex7-1').innerText;
       const ex7_2 = document.getElementById('ex7-2').innerText;
@@ -370,11 +370,19 @@
     </dl>
     <script>
       function solution(dwarfs) {
-        let res = 0;
-        for (const d of dwarfs) {
-          res += d
+        let res = dwarfs;
+        const sum = dwarfs.reduce((a, b) => a + b);
+
+        for (let i = 0; i < (dwarfs.length-1); i++) {
+          for (let j = i+1; j < dwarfs.length; j++) {
+            if ( (sum - (dwarfs[i] + dwarfs[j])) == 100 ) {
+              dwarfs.splice(j, 1);
+              dwarfs.splice(i, 1);
+            }
+          }
         }
-        return res = '모르겠다'
+
+        return res
       }
       const ex8 = [20, 7, 23, 19, 10, 15, 25, 8, 13];
       document.getElementById('as8').innerHTML = solution(ex8);
@@ -408,8 +416,7 @@
     </dl>
     <script>
       function solution(str) {
-        let res = str.replace(/A/gi, '#');
-        return res
+        return str.replace(/A/gi, '#')
       }
       const ex9 = document.getElementById('ex9').innerText;
       document.getElementById('as9').innerHTML = solution(ex9);
@@ -445,12 +452,27 @@
       <dd id="as10"></dd>
     </dl>
     <script>
-      function solution(word, sentence) {
-        let res = 0;
-        for (const w of sentence) {
-          if(w == word) res++;
-        }
-        return res
+      function solution(letter, sentence) {
+        // 1. 기본 for문 돌기
+        // let res = 0;
+        // for (const w of sentence) {
+        //   if(w == letter) res++;
+        // }
+        // return res
+
+        // 2. split 사용하기
+        // 나누는 글자가 처음이나 마지막에 있다해도
+        // 맨 앞 혹은 끝에 "" 빈문자열이 생겨서 -1이 맞음
+        return sentence.split(letter).length - 1
+
+        // 3. indexOf 사용하기
+        // let res = 0;
+        // let pos = sentence.indexOf(letter);
+        // while(pos != -1){
+        //   res++;
+        //   pos = sentence.indexOf(letter, pos+1);
+        // }
+        // return res
       }
       const ex10_1 = document.getElementById('ex10-1').innerText;
       const ex10_2 = document.getElementById('ex10-2').innerText;
@@ -486,6 +508,10 @@
         let res = 0;
         for (const a of str) {
           if(a === a.toUpperCase()) res++;
+          
+          // 아스키넘버 대문자 65~90 / 소문자 97~122 이용도 가능
+          // let num = a.charCodeAt();
+          // if(num >= 65 && num <= 90) res++;
         }
         return res
       }
@@ -519,6 +545,14 @@
     </dl>
     <script>
       function solution(str) {
+        // 아스키넘버 대문자 65~90 / 소문자 97~122 이용도 가능
+        // let res = '';
+        // for (const a of str) {
+        //   let num = a.charCodeAt();
+        //   if(num >= 97 && num <= 122) res += String.fromCharCode(num-32)
+        //   else res += a;
+        // }
+        // return res
         return str.toUpperCase()
       }
       const ex12 = document.getElementById('ex12').innerText;
@@ -592,6 +626,8 @@
     <script>
       function solution(arr) {
         let res = arr[0];
+        // 임의의 가장 작은 숫자를 사용해서 할 수도 있음
+        // let max = Number.MIN_SAFE_INTEGER;
         for (const str of arr) {
           if(res.length < str.length) res = str;
         }
@@ -634,11 +670,20 @@
       </dd>
     </dl>
     <script>
-      function solution(word) {
+      function solution(str) {
         let res;
-        const wordLng = Math.ceil(word.length/2);
-        if(word.length % 2) res = word[wordLng]
-        else res = word[wordLng-1] + word[wordLng]
+        const mid = Math.floor(str.length/2);
+        // if(str.length % 2) res = str[mid]
+        // else res = str[mid-1] + str[mid]
+
+        // 1. 문자열 자르기 substring
+        // if(str.length%2) res = str.substring(mid, mid+1)
+        // else res = str.substring(mid-1, mid+1)
+
+        // 2. 문자열 자르기 substr
+        if(str.length%2) res = str.substr(mid, 1)
+        else res = str.substr(mid-1, 2)
+
         return res
       }
       const ex15_1 = document.getElementById('ex15-1').innerText;
@@ -676,8 +721,13 @@
     <script>
       function solution(str) {
         let res = '';
-        for (const a of str) {
-          if(!res.includes(a)) res += a;
+        // for (const a of str) {
+        //   if(!res.includes(a)) res += a;
+        // }
+
+        // indexOf 사용하기
+        for (let i = 0; i < str.length; i++) {
+          if(str.indexOf(str[i]) == i) res += str[i]
         }
         return res
       }
@@ -714,10 +764,17 @@
     </dl>
     <script>
       function solution(arr) {
-        let res = [];
-        for (const str of arr) {
-          if(!res.includes(str)) res.push(str)
-        }
+        // let res = [];
+        // for (const str of arr) {
+        //   if(!res.includes(str)) res.push(str)
+        // }
+
+        // indexOf, filter 사용하기
+        let res;
+        res = arr.filter(function(v, i){
+          // console.log(arr.indexOf(v), i)
+          return arr.indexOf(v) == i
+        })
         return res
       }
       const ex17 = ['good', 'time', 'good', 'time', 'student'];
