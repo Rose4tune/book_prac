@@ -33,9 +33,13 @@
       <dd id="as1"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(str) {
+        let reverse = '';
+        for (let i = (str.length-1); i >= 0; i--) {
+          reverse += str[i];
+        }
+
+        return (str.toLowerCase() === reverse.toLowerCase()) ? 'YES' : 'NO'
       }
       const ex1 = document.getElementById('ex1').innerText;
       document.getElementById('as1').innerHTML = solution(ex1);
@@ -70,9 +74,14 @@
       <dd id="as2"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(s) {
+        let str = '';
+        let reverse = '';
+        s.forEach(s => str += s.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, ""))
+        for (let i = (str.length-1); i >= 0; i--) {
+          reverse += str[i]
+        }
+        return (str.toLowerCase() === reverse.toLowerCase()) ? 'YES' : 'NO'
       }
       const ex2 = ['found7,', 'time:', 'study;', 'Yduts;', 'emit,', '7Dnuof',];
       document.getElementById('as2').innerHTML = solution(ex2);
@@ -107,9 +116,8 @@
       <dd id="as3"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(str) {
+        return str.replace(/[^0-9]/g, '')
       }
       const ex3 = document.getElementById('ex3').innerText;
       document.getElementById('as3').innerHTML = solution(ex3);
@@ -145,8 +153,8 @@
     </dl>
     <script>
       function solution() {
-        let answer;
-        return answer
+        let res;
+        return res
       }
       const ex4 = document.getElementById('ex4').innerText;
       document.getElementById('as4').innerHTML = solution(ex4);
@@ -179,9 +187,16 @@
       <dd id="as5"></dd>
     </dl>
     <script>
-      function solution() {
-        let answer;
-        return answer
+      function solution(str) {
+        let res = '';
+        let cnt = 0;
+        for (let i = 0; i < str.length; i++) {
+          if(str[i] == str[i+1]) {
+            cnt++
+            console.log(cnt)
+          } else cnt = 0
+        }
+        return res
       }
       const ex5 = document.getElementById('ex5').innerText;
       document.getElementById('as5').innerHTML = solution(ex5);
