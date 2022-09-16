@@ -146,18 +146,37 @@
       <dd>첫 번째 줄에 각 문자열 s의 각 문자가 문자 t와 떨어진 거리를 순서대로 출력한다.</dd>
 
       <dt>예제</dt>
-      <dd id="ex4">teachermode e</dd>
+      <dd>
+        <span id="ex4-s">teachermode</span>
+        <span id="ex4-t">e</span>
+      </dd>
 
       <dt>정답</dt>
       <dd id="as4"></dd>
     </dl>
     <script>
-      function solution() {
-        let res;
+      function solution(s, t) {
+        let res = [];
+        let lt = s.split(t);
+        lt.forEach(l => {
+          let n = l.length;
+          let j = 1;
+          for (let i = 0; i < n; i++) {
+            if(i < n/2) {
+              res.push(i+1)
+            } else {
+              j++;
+              res.push(n-j)
+            }
+          }
+          if(l == '') res.push(0)
+        });
+        console.log(res)
         return res
       }
-      const ex4 = document.getElementById('ex4').innerText;
-      document.getElementById('as4').innerHTML = solution(ex4);
+      const ex4_s = document.getElementById('ex4-s').innerText;
+      const ex4_t = document.getElementById('ex4-t').innerText;
+      document.getElementById('as4').innerHTML = solution(ex4_s, ex4_t);
     </script>
   </div>
 
@@ -192,9 +211,11 @@
         let cnt = 0;
         for (let i = 0; i < str.length; i++) {
           if(str[i] == str[i+1]) {
-            cnt++
-            console.log(cnt)
-          } else cnt = 0
+            cnt++;
+          } else {
+            res += str[i] + (cnt == 0 ? '' : cnt+1);
+            cnt = 0;
+          }
         }
         return res
       }
