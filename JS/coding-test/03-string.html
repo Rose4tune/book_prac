@@ -34,12 +34,25 @@
     </dl>
     <script>
       function solution(str) {
-        let reverse = '';
-        for (let i = (str.length-1); i >= 0; i--) {
-          reverse += str[i];
-        }
+        // let reverse = '';
+        // for (let i = (str.length-1); i >= 0; i--) {
+        //   reverse += str[i];
+        // }
+        // return (str.toLowerCase() === reverse.toLowerCase()) ? 'YES' : 'NO'
 
-        return (str.toLowerCase() === reverse.toLowerCase()) ? 'YES' : 'NO'
+        let res = 'YES';
+        str = str.toLowerCase();
+
+        // 1. 글자 index로 비교하기
+        // let len = str.length;
+        // for (let i = 0; i < Math.floor(len/2); i++) {
+        //   if(str[i] != str[len-i-1]) res = 'NO'
+        // }
+
+        // 2. reverse 함수 사용하기
+        if(str.split('').reverse().join('') != str) return 'NO'
+
+        return res
       }
       const ex1 = document.getElementById('ex1').innerText;
       document.getElementById('as1').innerHTML = solution(ex1);
@@ -75,15 +88,20 @@
     </dl>
     <script>
       function solution(s) {
-        let str = '';
-        let reverse = '';
-        s.forEach(s => str += s.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, ""))
-        for (let i = (str.length-1); i >= 0; i--) {
-          reverse += str[i]
-        }
-        return (str.toLowerCase() === reverse.toLowerCase()) ? 'YES' : 'NO'
+        // let str = '';
+        // let reverse = '';
+        // s.forEach(s => str += s.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, ""))
+        // for (let i = (str.length-1); i >= 0; i--) {
+        //   reverse += str[i]
+        // }
+        // return (str.toLowerCase() === reverse.toLowerCase()) ? 'YES' : 'NO'
+
+        let res = 'YES';
+        s = s.toLowerCase().replace(/[^a-z]/g, '');
+        if(s.split('').reverse().join('') !== s) return 'NO'
+        return res
       }
-      const ex2 = ['found7,', 'time:', 'study;', 'Yduts;', 'emit,', '7Dnuof',];
+      const ex2 = 'found7, time: study; Yduts; emit, 7Dnuof';
       document.getElementById('as2').innerHTML = solution(ex2);
     </script>
   </div>
@@ -117,7 +135,16 @@
     </dl>
     <script>
       function solution(str) {
-        return str.replace(/[^0-9]/g, '')
+        // return str.replace(/[^0-9]/g, '')
+
+        let res = '';
+        for (const s of str) {
+          // if(!isNaN(s)) res += s;
+          if(!isNaN(s)) res = res*10+Number(s);
+        }
+        
+        // return parseInt(res)
+        return res
       }
       const ex3 = document.getElementById('ex3').innerText;
       document.getElementById('as3').innerHTML = solution(ex3);
@@ -157,21 +184,27 @@
     <script>
       function solution(s, t) {
         let res = [];
-        let lt = s.split(t);
-        lt.forEach(l => {
-          let n = l.length;
-          let j = 1;
-          for (let i = 0; i < n; i++) {
-            if(i < n/2) {
-              res.push(i+1)
-            } else {
-              j++;
-              res.push(n-j)
-            }
+        let p = 1000;
+
+        for (const x of s) {
+          if(x === t) {
+            p = 0;
+            res.push(p)
+          } else {
+            p++;
+            res.push(p)
           }
-          if(l == '') res.push(0)
-        });
-        console.log(res)
+        }
+        p = 1000;
+        for (let i = (s.length-1); i >= 0; i--) {
+          if(s[i] === t){
+            p = 0;
+          } else {
+            p++;
+            res[i] = Math.min(res[i], p)
+          }
+        }
+
         return res
       }
       const ex4_s = document.getElementById('ex4-s').innerText;
@@ -208,13 +241,15 @@
     <script>
       function solution(str) {
         let res = '';
-        let cnt = 0;
-        for (let i = 0; i < str.length; i++) {
-          if(str[i] == str[i+1]) {
-            cnt++;
-          } else {
-            res += str[i] + (cnt == 0 ? '' : cnt+1);
-            cnt = 0;
+        let cnt = 1;
+        str = str + ' ';
+        for (let i = 0; i < (str.length-1); i++) {
+          if(str[i] == str[i+1]) cnt++;
+          else {
+            res += str[i] + (cnt > 1 ? String(cnt) : '');
+            // res += str[i];
+            // if(cnt > 1) res += String(cnt);
+            cnt = 1;
           }
         }
         return res
