@@ -82,29 +82,62 @@
     coll.add(new Model({id: 3, name: 'BB'}));
     coll.add(new Model({id: 5, name: 'CC'}));
 
-    console.log(coll.at(2).get('name'))
-    console.log(coll.at(1).get('id'))
+    // console.log(coll.at(2).get('name'))
+    // console.log(coll.at(1).get('id'))
+
     _.go(
       coll,
       L.map(m => m.get('name')),
-      _.each(console.log)
+      // _.each(console.log)
     )
+    
+    _.go(
+      coll,
+      _.each(m => m.set('name', m.get('name').toLowerCase()))
+    )
+    // console.log(coll)
   </script>
 
 
   <h3>3. Product, Products - 메서드 함수형으로 구현하기</h3>
   <script>
+    const addAll = _.reduce(add)
+    class Product extends Model {}
+    class Products extends Collection {
+      getPrice(){
+        return L.map(p => p.get('price'), this);
+      }
+      totalPrice() {
+        return addAll(this.getPrice());
+
+        // return _.reduce(add, L.map(p => p.get('price'), this));
+
+        // return _.go(this,
+        //   L.map(p => p.get('price')),
+        //   _.reduce((a, b) => a + b)
+        // )
+
+        // console.log([...this]);
+        // let total = 0;
+        // this._models.forEach(product => {
+        //   total += product.get('price');
+        // });
+        // return total;
+      }
+    }
+
+    const products = new Products();
+
+    products.add(new Product({id:1, price: 10000}));
+    console.log(products.totalPrice());
+
+    products.add(new Product({id:3, price: 25000}));
+    console.log(products.totalPrice());
+
+    products.add(new Product({id:5, price: 35000}));
+    console.log(products.totalPrice());
   </script>
   
-
-
-
-
-
-
-
-  <script>
-  </script>
 
 </body>
 </html>
