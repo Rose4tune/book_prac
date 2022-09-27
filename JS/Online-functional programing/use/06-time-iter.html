@@ -10,33 +10,105 @@
 </head>
 <body>
   <h3>1. range와 take의 재해석</h3>
+  <p>시점을 가지고 실행되는 코드를 이터러블(리습의 사고방식)로 바라보는 방식</p>
+  <script>
+    _.go(
+      _.range(10), // 0~9까지의 배열
+      _.take(3), // 앞에서부터 3개만 자르기
+      // _.each(console.log)
+    )
+
+    _.go(
+      L.range(10), // 0~9까지의 이터러블, 최대 10번 일어날 일(10번의 일을 예약)
+      // L.map(n => _.delay(500 * n, n)),
+      L.map(_.delay(500)),
+      L.map(_ => new Date()),
+      L.filter(a => a % 2),
+      L.take(3), // 최대 3개의 값을 필요하고, 최대 3번의 일을 수행(최대 3번의 일을 수행)
+      // _.each(console.log)
+    )
+  </script>
+
+
   <h3>2. takeWhile, takeUntil</h3>
+  <p>takeWhile : true일 때 까지만 해당하는 값들을 담음</p>
+  <p>takeUntil : 처음으로 true를 만나는 때까지만 값들을 담음</p>
+  <script>
+    _.go(
+      [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0],
+      _.takeWhile(a => a),
+      // _.each(console.log)
+    )
+    
+    _.go(
+      [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0],
+      _.takeUntil(a => a),
+      // _.each(console.log)
+    )
+    
+    _.go(
+      [0, false, undefined, null, 10, 20, 30],
+      _.takeUntil(a => a),
+      // _.each(console.log)
+    )
+  </script>
+
+
   <h3>3. 자동차 경주 - 할 일들을 iter(list)로 바라보기</h3>
+  <script>
+    const track = [
+      {cars: ['철수', '영희', '철희', '영수']},
+      {cars: ['하든', '커리', '듀란트', '탐슨']},
+      {cars: ['폴', '어빙', '릴라드', '멕컬럼']},
+      {cars: ['스파이더맨', '아이언맨']},
+      {cars: []},
+    ];
+
+    _.go(
+      // L.range(track.length),
+      L.range(Infinity),
+      L.map(i => track[i]), //track의 조를 꺼냄
+      // L.takeWhile(({cars:{length: l}}) => l == 4), //4명이 찬 조만 꺼냄(cars: array의 객체로 담김)
+      L.map(({cars}) => cars),
+      L.map(_.delay(1000)),
+      // L.takeWhile(({length: l}) => l == 4),//4명이 찬 조만 출발(각각의 배열로 담김)
+      L.takeUntil(({length: l}) => l < 4),//4명보다 적은 첫번째 조까지만 출발(안찼다는건 뒤에 없다는 것이기 때문)
+      L.flat,
+      L.map(car => `${car} 출발!`),
+      _.each(console.log)
+    );
+  </script>
+
+
   <h3>4. 아임포트 결제 누락 처리 스캐쥴러</h3>
+  <script>
+  </script>
+
+
   <h4>4-1. API 설명</h4>
+  <script>
+  </script>
+
+
   <h4>4-2. 결제된 내역 가져오기</h4>
+  <script>
+  </script>
+
+
   <h4>4-3. 가맹점 DB의 주문서 가져오기</h4>
+  <script>
+  </script>
+
+
   <h4>4-4. 비교 후 결제 취소 API 실행하기</h4>
+  <script>
+  </script>
+
+
   <h4>4-5. 반복 실행하기</h4>
   <script>
   </script>
   
-
-  <script>
-  </script>
-
-
-
-
-
-  <script>
-  </script>
-
-
-
-    
-  <script>
-  </script>
 
 </body>
 </html>
