@@ -75,23 +75,69 @@
       L.takeUntil(({length: l}) => l < 4),//4명보다 적은 첫번째 조까지만 출발(안찼다는건 뒤에 없다는 것이기 때문)
       L.flat,
       L.map(car => `${car} 출발!`),
-      _.each(console.log)
+      // _.each(console.log)
     );
   </script>
 
 
   <h3>4. 아임포트 결제 누락 처리 스캐쥴러</h3>
-  <script>
-  </script>
-
-
   <h4>4-1. API 설명</h4>
   <script>
+    const Impt = {
+      payments: {
+        1: [
+          {imp_id: 11, order_id: 1, amount: 15000},
+          {imp_id: 12, order_id: 2, amount: 25000},
+          {imp_id: 13, order_id: 3, amount: 10000}
+        ],
+        2: [
+          {imp_id: 14, order_id: 4, amount: 25000},
+          {imp_id: 15, order_id: 5, amount: 45000},
+          {imp_id: 16, order_id: 6, amount: 15000}
+        ],
+        3: [
+          {imp_id: 17, order_id: 7, amount: 20000},
+          {imp_id: 18, order_id: 8, amount: 30000}
+        ],
+        4: [],
+        5: [],
+        //...
+      },
+      // 4-2. 결제된 내역 가져오기
+      getPayments: page => {
+        console.log(`http://..?page=${page}`);
+        return _.delay(1000, Impt.payments[page])
+      },
+      canclePayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
+    };
+    
+    const DB = {
+      getOrder: ids => _.delay(100, [
+        {id: 1},
+        {id: 3},
+        {id: 7}
+      ])
+    };
   </script>
 
 
   <h4>4-2. 결제된 내역 가져오기</h4>
   <script>
+    async function job(){
+      // 결제된 결제모듈측 payments 가져온다.
+      // page 단위로 가져오는데,
+      // 결제 데이터가 있을 때가지 모두 가져와서 하나로 합친다.
+      const payments = await _.go(
+        L.range(1, Infinity),
+        L.map(Impt.getPayments),
+        // L.takeWhile(({length}) => length), //경우에 따라서는 불필요한 콜도 하게됨
+        L.takeUntil(({length}) => length < 3), // takeWhile보단 좀 더 효율적임(불필요한 콜을 안함)
+        _.flat
+      )
+
+      console.log(payments);
+    }
+    job()
   </script>
 
 
