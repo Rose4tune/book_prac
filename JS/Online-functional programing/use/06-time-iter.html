@@ -122,6 +122,8 @@
 
 
   <h4>4-2. 결제된 내역 가져오기</h4>
+  <h4>4-3. 가맹점 DB의 주문서 가져오기</h4>
+  <h4>4-4. 비교 후 결제 취소 API 실행하기</h4>
   <script>
     async function job(){
       // 결제된 결제모듈측 payments 가져온다.
@@ -133,21 +135,29 @@
         // L.takeWhile(({length}) => length), //경우에 따라서는 불필요한 콜도 하게됨
         L.takeUntil(({length}) => length < 3), // takeWhile보단 좀 더 효율적임(불필요한 콜을 안함)
         _.flat
-      )
+      );
 
-      console.log(payments);
+      // 결제가 실제로 완료된 가맹점 측 주문서 id들을 뽑는다.
+      const order_ids = await _.go(
+        payments,
+        _.map(p => p.order_id),
+        DB.getOrder,
+        _.map(({id}) => id)
+      );
+
+      // 결제모듈의 payments의 가맹점의 주문서를 비교해서
+      // 결제를 취소해야할 id들을 뽑아서
+      // 결제 취소 api를 실행
+      await _.go(
+        payments,
+        L.reject(p => order_ids.includes(p.order_id)),
+        L.map(p => p.imp_id),
+        // _.each(Impt.canclePayment),
+        L.map(Impt.canclePayment),
+        _.each(console.log)
+      )
     }
     job()
-  </script>
-
-
-  <h4>4-3. 가맹점 DB의 주문서 가져오기</h4>
-  <script>
-  </script>
-
-
-  <h4>4-4. 비교 후 결제 취소 API 실행하기</h4>
-  <script>
   </script>
 
 
