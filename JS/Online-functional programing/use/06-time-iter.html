@@ -157,7 +157,16 @@
         _.each(console.log)
       )
     }
-    job()
+
+    // 7초에 한 번만 한다.
+    // 그런데 만일 job이 7초보다 더 걸리면, job이 끝날 때까지 기다린다.
+    (function recur(){
+      Promise.all([
+        _.delay(7000, undefined),
+        job()
+      ]).then(recur);
+      // job().then(recur);
+    })();
   </script>
 
 
