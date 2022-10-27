@@ -6,39 +6,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>함수형 응용편 (프론트엔드에서의 활용)</title>
 
+  <style>
+    .images{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px 20px;
+    }
+    .image{
+      position: relative;
+      width: 12.5rem;
+      padding: 10px;
+      border: 1px solid gray;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgb(137, 137, 137);
+    }
+    .image img{width: 100%;}
+    .name{
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .remove{
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+      width: 25px;
+      height: 25px;
+      background: rgb(163, 163, 163);
+      border-radius: 25px;
+      text-align: center;
+      cursor: pointer;
+      color: rgb(255, 255, 255);
+    }
+    .remove:hover{
+      background: rgb(109, 109, 109);
+    }
+  </style>
+
   <script src="../fx.js"></script>
 </head>
 <body>
   <h2>프론트엔드에서 함수형 / 이터러블 / 동시성 프로그래밍</h2>
+  
   <h3>1. ES6 템플릿 리터럴 활용</h3>
+
+  <script>
+    // 함수모음집..?
+    const $ = {};
+    
+    $.qs = (sel, parent = document) => parent.querySelector(sel); // $.qs = document.querySelector.bind(document);
+    $.qsa = (sel, parent = document) => parent.querySelectorAll(sel); // $.qsa = document.querySelectorAll.bind(document);
+
+    $.find = _.curry($.qs)
+    $.findAll = _.curry($.qsa)
+
+    $.el = html => {
+      const wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      return wrap.children[0];
+    }
+
+    $.append = _.curry((parent, child) => parent.appendChild(child));
+
+    $.closest = _.curry((sel, el) => el.closest(sel));
+    $.remove = el => el.parentNode.removeChild(el);
+
+    $.on = (event, f) => els => _.each(el => el.addEventListener(event, f), _.isIterable(els) ? els : [els]);
+  </script>
+
+
+
   <h3>2. 이미지 목록 그리기</h3>
+  <script>
+    const Images = {}
+    Images.fetch = () => new Promise(resolve => setTimeout(() => resolve([
+      {name: 'Anna1', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa1', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella1', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella1', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin1', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell1', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White1', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly1', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula1', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan1', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna2', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa2', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella2', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella2', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin2', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell2', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White2', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly2', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula2', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan2', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna3', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa3', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella3', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella3', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin3', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell3', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White3', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly3', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula3', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan3', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna4', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa4', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella4', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella4', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin4', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell4', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White4', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly4', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula4', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan4', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna5', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa5', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella5', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella5', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin5', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell5', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White5', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly5', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula5', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan5', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna6', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa6', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella6', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella6', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin6', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell6', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White6', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly6', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula6', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan6', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna7', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa7', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella7', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella7', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin7', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell7', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White7', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly7', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula7', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan7', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna8', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa8', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella8', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella8', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin8', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell8', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White8', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly8', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula8', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan8', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"},
+      {name: 'Anna9', url: "https://t1.daumcdn.net/cfile/tistory/9990FE485B29BFEA20"}, {name: 'Elsa9', url: "https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/MhXSK8PsI0zmahbJsUn8Ad0O8AQ.jpg"}, {name: 'Cruella9', url: "https://image.ajunews.com/content/image/2019/07/25/20190725194350760702.jpg"}, {name: 'Cinderella9', url: "https://t2.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/nqK/image/Mx-xBf9hkfUmX9B3JyW6J6pz_Hs"}, {name: 'Jasmin9', url: "https://cdn.entermedia.co.kr/news/photo/201905/9635_23523_1355.jpg"}, {name: 'Bell9', url: "https://p4.wallpaperbetter.com/wallpaper/309/112/907/5k-beauty-and-the-beast-emma-watson-belle-wallpaper-preview.jpg"}, {name: 'Snow White9', url: "https://img.insight.co.kr/static/2021/12/11/700/img_20211211112225_w9lpdz3v.webp"}, {name: 'Eilly9', url: "https://images.khan.co.kr/article/2019/07/06/l_2019070602000304500059972.jpg"}, {name: 'Ursula9', url: "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMThfMjk2/MDAxNTgyMDAyNjk2NjE4.GX0enTUOkmtDrFaDrGpZJjt8qfE4reh7NNqi7Isnxjkg.GAPvITGuT-cqCs1R_OREOg2Xwq8LUwV5j9BpIoa4vUwg.JPEG.c106507/SE-fc86565f-69e7-48ab-a53c-6073329560cd.jpg?type=w800"}, {name: 'Mullan9', url: "https://i.ytimg.com/vi/QGIEl2nGWsM/maxresdefault.jpg"}
+    ]), 200));
+
+    // const string = iter => _.reduce((a, b) => `${a}${b}`, iter);
+    // _.strMap = _.pipe(L.map, string);
+
+    // 줄여쓰면(img) 변수, 풀네임(image)은 함수
+    Images.tmpl = imgs => /*html*/`
+      <div class="images">
+        ${_.strMap(img => /*html*/`
+          <div class="image">
+            <div class="box"><img src="${img.url}"></div>
+            <div class="name">${img.name}</div>
+            <div class="remove">X</div>
+          </div>
+        `, imgs)}
+      </div>`;
+  </script>
+
+
+
   <h3>3. 아이템 지우기</h3>
+  <script>
+    _.go(
+      Images.fetch(),
+      Images.tmpl,
+      $.el,
+      $.append($.qs('body')), // el => document.querySelector('body').appendChild(el)
+      $.findAll('.remove'), // el => $.qsa('.image', el)
+      $.on('click', e => _.go(
+        e.currentTarget,
+        $.closest('.image'),
+        $.remove
+      ))
+    )
+  </script>
+
+
+
   <h3>4. 커스텀 confilrm 창과 Promise</h3>
-  <h3>5. 클래스를 대신 함수로 하는 추상롸</h3>
+  <script>
+  </script>
+
+
+
+  <h3>5. 클래스를 대신 함수로 하는 추상화</h3>
+  <script>
+  </script>
+
+
+
   <h3>6. 이미지 동시성 다루기</h3>
+  <script>
+  </script>
+
+
+
   <h3>7. 동시성 부하 조절</h3>
+  <script>
+  </script>
+
+
+
   <h3>8. 고차함수로 더 작게 나누어 재사용성 높이기 - 데이터형 없애기</h3>
+  <script>
+  </script>
+
+
+
   <h3>9. 상위 스코프 변수를 사용하는 함수와 아닌 함수들 쪼개기</h3>
+  <script>
+  </script>
+
+
+
   <h3>10. DOM을 다루는 고차함수</h3>
   <script>
   </script>
   
-
-  <script>
-  </script>
-
-
-
-
-
-  <script>
-  </script>
-
-
-
-    
-  <script>
-  </script>
-
 </body>
 </html>
