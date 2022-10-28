@@ -42,6 +42,37 @@
     .remove:hover{
       background: rgb(109, 109, 109);
     }
+
+    .confirm{
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      background:rgba(109, 109, 109, 0.6);
+    }
+    .confirm .body {
+      width: 30vw;
+      padding: 60px 20px;
+      margin: 20% auto;
+      border-radius: 10px;
+      background: rgb(255, 255, 255);
+      box-shadow: 0 0 15px rgb(108, 108, 108);
+      text-align: center;
+    }
+    .confirm .msg {
+      margin-bottom: 10px;
+    }
+    .confirm button {
+      padding: 2px 10px;
+      border: 1px solid gray;
+      border-radius: 5px;
+      outline: 0;
+    }
+    .confirm button.cancel {background: rgb(155, 212, 255)}
+    .confirm button.ok {background: rgb(255, 155, 155)}
   </style>
 
   <script src="../fx.js"></script>
@@ -112,24 +143,42 @@
 
   <h3>3. 아이템 지우기</h3>
   <script>
-    _.go(
-      Images.fetch(),
-      Images.tmpl,
-      $.el,
-      $.append($.qs('body')), // el => document.querySelector('body').appendChild(el)
-      $.findAll('.remove'), // el => $.qsa('.image', el)
-      $.on('click', e => _.go(
-        e.currentTarget,
-        $.closest('.image'),
-        $.remove
-      ))
-    )
+    // _.go(
+    //   Images.fetch(),
+    //   Images.tmpl,
+    //   $.el,
+    //   $.append($.qs('body')), // el => document.querySelector('body').appendChild(el)
+    //   $.findAll('.remove'), // el => $.qsa('.image', el)
+    //   $.on('click', e => _.go(
+    //     e.currentTarget,
+    //     $.closest('.image'),
+    //     $.remove
+    //   ))
+    // )
   </script>
 
 
 
   <h3>4. 커스텀 confilrm 창과 Promise</h3>
   <script>
+    const Ui = {};
+
+    Ui.confirm = msg => _.go(/*html*/
+      `
+        <div class="confirm">
+          <div class="body">
+            <div class="msg">${msg}</div>
+            <div class="buttons">
+              <button type="button" class="cancel">취소</button>
+              <button type="button" class="ok">확인</button>
+            </div>
+          </div>
+        </div>
+      `,
+      $.el,
+      $.append($.qs('body'))
+    )
+    Ui.confirm('정말 삭제하시겠습니까?');
   </script>
 
 
