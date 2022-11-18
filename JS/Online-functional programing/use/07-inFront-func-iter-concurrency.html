@@ -71,7 +71,7 @@
       border-radius: 5px;
       outline: 0;
     }
-    .confirm button.cancel {background: rgb(155, 212, 255)}
+    .confirm button.cancle {background: rgb(155, 212, 255)}
     .confirm button.ok {background: rgb(255, 155, 155)}
   </style>
 
@@ -143,18 +143,21 @@
 
   <h3>3. 아이템 지우기</h3>
   <script>
-    // _.go(
-    //   Images.fetch(),
-    //   Images.tmpl,
-    //   $.el,
-    //   $.append($.qs('body')), // el => document.querySelector('body').appendChild(el)
-    //   $.findAll('.remove'), // el => $.qsa('.image', el)
-    //   $.on('click', e => _.go(
-    //     e.currentTarget,
-    //     $.closest('.image'),
-    //     $.remove
-    //   ))
-    // )
+    _.go(
+      Images.fetch(),
+      Images.tmpl,
+      $.el,
+      $.append($.qs('body')), // el => document.querySelector('body').appendChild(el)
+      $.findAll('.remove'), // el => $.qsa('.image', el)
+      $.on('click', async ({currentTarget:ct}) => {
+        if(await Ui.confirm('정말 삭제하시겠습니까?')) {
+          _.go(
+          ct,
+          $.closest('.image'),
+          $.remove);
+        }
+      })
+    )
   </script>
 
 
@@ -163,22 +166,42 @@
   <script>
     const Ui = {};
 
-    Ui.confirm = msg => _.go(/*html*/
-      `
-        <div class="confirm">
+    Ui.confirm = msg => new Promise (resolve => _.go(/*html*/
+      `<div class="confirm">
           <div class="body">
             <div class="msg">${msg}</div>
             <div class="buttons">
-              <button type="button" class="cancel">취소</button>
+              <button type="button" class="cancle">취소</button>
               <button type="button" class="ok">확인</button>
             </div>
           </div>
-        </div>
-      `,
+        </div>`,
       $.el,
-      $.append($.qs('body'))
-    )
-    Ui.confirm('정말 삭제하시겠습니까?');
+      $.append($.qs('body')),
+      _.tap(
+        $.find('.ok'),
+        $.on('click', e => _.go(
+          e.currentTarget,
+          $.closest('.confirm'),
+          $.remove,
+          _ => resolve(true)
+        ))),
+      _.tap(
+        $.find('.cancle'),
+        $.on('click', e => _.go(
+          e.currentTarget,
+          $.closest('.confirm'),
+          $.remove,
+          resolve,
+          _ => resolve(false)
+        )))
+    ));
+
+    async function f() {
+      await Ui.confirm('정말 삭제하시겠습니까?');
+      console.log('hi')
+    }
+    // f()
   </script>
 
 
