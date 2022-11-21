@@ -166,36 +166,6 @@
   <script>
     const Ui = {};
 
-    Ui.confirm = msg => new Promise (resolve => _.go(/*html*/
-      `<div class="confirm">
-          <div class="body">
-            <div class="msg">${msg}</div>
-            <div class="buttons">
-              <button type="button" class="cancle">취소</button>
-              <button type="button" class="ok">확인</button>
-            </div>
-          </div>
-        </div>`,
-      $.el,
-      $.append($.qs('body')),
-      _.tap(
-        $.find('.ok'),
-        $.on('click', e => _.go(
-          e.currentTarget,
-          $.closest('.confirm'),
-          $.remove,
-          _ => resolve(true)
-        ))),
-      _.tap(
-        $.find('.cancle'),
-        $.on('click', e => _.go(
-          e.currentTarget,
-          $.closest('.confirm'),
-          $.remove,
-          resolve,
-          _ => resolve(false)
-        )))
-    ));
 
     async function f() {
       await Ui.confirm('정말 삭제하시겠습니까?');
@@ -208,6 +178,43 @@
 
   <h3>5. 클래스를 대신 함수로 하는 추상화</h3>
   <script>
+    
+    Ui.message = _.curry((btns, msg) => new Promise (resolve => _.go(/*html*/
+      `<div class="confirm">
+          <div class="body">
+            <div class="msg">${msg}</div>
+            <div class="buttons">
+              ${
+                _.strMap(btn => `
+                <button type="button" class="${btn.type}">${btn.name}</button>`
+                , btns)
+              }
+            </div>
+          </div>
+        </div>`,
+      $.el,
+      $.append($.qs('body')),
+      ..._.map(btn =>_.tap(
+        $.find(`.${btn.type}`),
+        $.on('click', e => _.go(
+          e.currentTarget,
+          $.closest('.confirm'),
+          $.remove,
+          _ => resolve(btn.value)
+        ))), btns)
+    )));
+    
+    Ui.confirm = Ui.message([
+      {name: '취소', type: 'cancle', value: false},
+      {name: '확인', type: 'ok', value: true}
+    ]);
+
+    Ui.alert = Ui.message([
+      {name: '확인', type: 'ok', value: true}
+    ]);
+
+    Ui.alert('삭제되었습니다.')
+    Ui.confirm('삭제 하시겠습니까?')
   </script>
 
 
