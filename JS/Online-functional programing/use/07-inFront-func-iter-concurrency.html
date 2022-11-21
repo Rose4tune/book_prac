@@ -7,6 +7,7 @@
   <title>함수형 응용편 (프론트엔드에서의 활용)</title>
 
   <style>
+    .fade {opacity: 0;}
     .images{
       display: flex;
       flex-wrap: wrap;
@@ -127,16 +128,18 @@
     // _.strMap = _.pipe(L.map, string);
 
     // 줄여쓰면(img) 변수, 풀네임(image)은 함수
-    Images.tmpl = imgs => /*html*/`
+    Images.tmpl = imgs => `
       <div class="images">
-        ${_.strMap(img => /*html*/`
+        ${_.strMap(img => `
           <div class="image">
-            <div class="box"><img src="${img.url}"></div>
+            <div class="box"><img lazy-src="${img.url}"></div>
             <div class="name">${img.name}</div>
             <div class="remove">X</div>
           </div>
         `, imgs)}
       </div>`;
+
+      // lazy-src : 다른 곳에 이미지 저장
   </script>
 
 
