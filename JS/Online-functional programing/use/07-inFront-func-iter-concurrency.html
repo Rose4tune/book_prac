@@ -8,6 +8,10 @@
 
   <style>
     .fade {opacity: 0;}
+    .fade-in {
+      opacity: 1;
+      transition: opacity .3s;
+    }
     .images{
       display: flex;
       flex-wrap: wrap;
@@ -132,7 +136,7 @@
       <div class="images">
         ${_.strMap(img => `
           <div class="image">
-            <div class="box"><img lazy-src="${img.url}"></div>
+            <div class="box"><img src="" class="fade" lazy-src="${img.url}"></div>
             <div class="name">${img.name}</div>
             <div class="remove">X</div>
           </div>
@@ -150,8 +154,16 @@
       Images.fetch(),
       Images.tmpl,
       $.el,
-      $.append($.qs('body')), // el => document.querySelector('body').appendChild(el)
-      $.findAll('.remove'), // el => $.qsa('.image', el)
+      $.append($.qs('body')),
+      _.tap(
+        $.findAll('img'),
+        L.map(img => new Promise(resolve => {
+          img.onload = () => resolve(img);
+          img.src = img.getAttribute('lazy-src');
+        })),
+        _.each(img => img.classList.add('fade-in'))
+      ),
+      $.findAll('.remove'),
       $.on('click', async ({currentTarget:ct}) => {
         if(await Ui.confirm('정말 삭제하시겠습니까?')) {
           _.go(
