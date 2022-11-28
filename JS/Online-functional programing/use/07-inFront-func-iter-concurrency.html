@@ -157,6 +157,7 @@
 
   <h3>4. 커스텀 confilrm 창과 Promise</h3>
   <h3>5. 클래스를 대신 함수로 하는 추상화</h3>
+  <h3>10. DOM을 다루는 고차함수</h3>
   <script>
     const Ui = {};
     Ui.message = _.curry((btns, msg) => new Promise (resolve => _.go(/*html*/
@@ -192,6 +193,16 @@
     Ui.alert = Ui.message([
       {name: '확인', type: 'ok', value: true}
     ]);
+
+    Ui.remover = (btnSel, targetSel) => _.pipe(
+      $.findAll(btnSel),
+      $.on('click', async ({currentTarget: ct}) => 
+        await Ui.confirm('정말 삭제하시겠습니까?') &&
+        _.go(
+          ct,
+          $.closest(targetSel),
+          $.remove))
+    );
   </script>
 
   
@@ -230,23 +241,10 @@
       $.el,
       $.append($.qs('#test')),
       Images.loader(4),
-      $.findAll('.remove'),
-      $.on('click', async ({currentTarget:ct}) => {
-        if(await Ui.confirm('정말 삭제하시겠습니까?')) {
-          _.go(
-          ct,
-          $.closest('.image'),
-          $.remove);
-        }
-      })
+      Ui.remover('.remove', '.image')
     )
   </script>
 
-
-
-  <h3>10. DOM을 다루는 고차함수</h3>
-  <script>
-  </script>
   
 </body>
 </html>
