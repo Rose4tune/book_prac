@@ -25,6 +25,10 @@
       border-radius: 10px;
       box-shadow: 2px 2px 5px rgb(137, 137, 137);
     }
+    .image .box {
+      height: 100px;
+      overflow: hidden;
+    }
     .image img{width: 100%;}
     .name{
       font-size: 20px;
@@ -57,6 +61,7 @@
       width: 100vw;
       height: 100vh;
       background:rgba(109, 109, 109, 0.6);
+      z-index: 1000;
     }
     .confirm .body {
       width: 30vw;
@@ -83,6 +88,7 @@
   <script src="../fx.js"></script>
 </head>
 <body>
+  <div id="test"></div>
   <h2>프론트엔드에서 함수형 / 이터러블 / 동시성 프로그래밍</h2>
   
   <h3>1. ES6 템플릿 리터럴 활용</h3>
@@ -109,6 +115,8 @@
     $.remove = el => el.parentNode.removeChild(el);
 
     $.on = (event, f) => els => _.each(el => el.addEventListener(event, f), _.isIterable(els) ? els : [els]);
+
+    $.addClass = _.curry((name, el) => el.classList.add(name));
   </script>
 
 
@@ -154,14 +162,15 @@
       Images.fetch(),
       Images.tmpl,
       $.el,
-      $.append($.qs('body')),
+      $.append($.qs('#test')),
       _.tap(
         $.findAll('img'),
         L.map(img => new Promise(resolve => {
           img.onload = () => resolve(img);
           img.src = img.getAttribute('lazy-src');
         })),
-        _.each(img => img.classList.add('fade-in'))
+        C.takeAll,
+        _.each($.addClass('fade-in'))
       ),
       $.findAll('.remove'),
       $.on('click', async ({currentTarget:ct}) => {
@@ -192,8 +201,9 @@
 
 
   <h3>5. 클래스를 대신 함수로 하는 추상화</h3>
+  <h3>6. 이미지 동시성 다루기</h3>
+  <h3>7. 동시성 부하 조절</h3>
   <script>
-    
     Ui.message = _.curry((btns, msg) => new Promise (resolve => _.go(/*html*/
       `<div class="confirm">
           <div class="body">
@@ -228,20 +238,8 @@
       {name: '확인', type: 'ok', value: true}
     ]);
 
-    Ui.alert('삭제되었습니다.')
-    Ui.confirm('삭제 하시겠습니까?')
-  </script>
-
-
-
-  <h3>6. 이미지 동시성 다루기</h3>
-  <script>
-  </script>
-
-
-
-  <h3>7. 동시성 부하 조절</h3>
-  <script>
+    // Ui.alert('삭제되었습니다.')
+    // Ui.confirm('삭제 하시겠습니까?')
   </script>
 
 
