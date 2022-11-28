@@ -159,6 +159,7 @@
   <h3>3. 아이템 지우기</h3>
   <h3>6. 이미지 동시성 다루기</h3>
   <h3>7. 동시성 부하 조절</h3>
+  <h3>8. 고차함수로 더 작게 나누어 재사용성 높이기 - 데이터형(도메인) 없애기</h3>
   <script>
     Images.loader = limit => _.tap(
       $.findAll('img'),
@@ -166,18 +167,20 @@
         img.onload = () => resolve(img);
         img.src = img.getAttribute('lazy-src');
       })),
-      lazy => {
-        let r = L.range(Infinity);
-        return _.go(
-          lazy,
-          _.groupBy(_ => Math.floor(r.next().value / limit)),
-          L.values,
-          L.map(L.map(f => f())),
-          L.map(C.takeAll),
-          _.each(_.each($.addClass('fade-in')))
+      C.takeAllWithLimit(limit),
+        _.each(_.each($.addClass('fade-in')))
+    );
+
+    C.takeAllWithLimit = _.curry((limit, iter) => {
+      let r = L.range(Infinity);
+      return _.go(
+        iter,
+        _.groupBy(_ => Math.floor(r.next().value / limit)),
+        L.values,
+        L.map(L.map(f => f())),
+        L.map(C.takeAll),
         )
-      }
-    )
+    })
     
     _.go(
       Images.fetch(),
@@ -255,7 +258,6 @@
 
 
 
-  <h3>8. 고차함수로 더 작게 나누어 재사용성 높이기 - 데이터형 없애기</h3>
   <script>
   </script>
 
