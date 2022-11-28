@@ -157,6 +157,8 @@
 
 
   <h3>3. 아이템 지우기</h3>
+  <h3>6. 이미지 동시성 다루기</h3>
+  <h3>7. 동시성 부하 조절</h3>
   <script>
     _.go(
       Images.fetch(),
@@ -165,12 +167,23 @@
       $.append($.qs('#test')),
       _.tap(
         $.findAll('img'),
-        L.map(img => new Promise(resolve => {
+        L.map(img => _ => new Promise(resolve => {
           img.onload = () => resolve(img);
           img.src = img.getAttribute('lazy-src');
         })),
-        C.takeAll,
-        _.each($.addClass('fade-in'))
+        lazy => {
+          let r = L.range(Infinity);
+          return _.go(
+            lazy,
+            _.groupBy(_ => Math.floor(r.next().value / 4)),
+            L.values,
+            L.map(L.map(f => f())),
+            L.map(C.takeAll),
+            _.each(_.each($.addClass('fade-in')))
+          )
+        }
+        // C.takeAll,
+        // _.each($.addClass('fade-in'))
       ),
       $.findAll('.remove'),
       $.on('click', async ({currentTarget:ct}) => {
@@ -201,8 +214,6 @@
 
 
   <h3>5. 클래스를 대신 함수로 하는 추상화</h3>
-  <h3>6. 이미지 동시성 다루기</h3>
-  <h3>7. 동시성 부하 조절</h3>
   <script>
     Ui.message = _.curry((btns, msg) => new Promise (resolve => _.go(/*html*/
       `<div class="confirm">
