@@ -160,31 +160,31 @@
   <h3>6. 이미지 동시성 다루기</h3>
   <h3>7. 동시성 부하 조절</h3>
   <script>
+    Images.loader = limit => _.tap(
+      $.findAll('img'),
+      L.map(img => _ => new Promise(resolve => {
+        img.onload = () => resolve(img);
+        img.src = img.getAttribute('lazy-src');
+      })),
+      lazy => {
+        let r = L.range(Infinity);
+        return _.go(
+          lazy,
+          _.groupBy(_ => Math.floor(r.next().value / limit)),
+          L.values,
+          L.map(L.map(f => f())),
+          L.map(C.takeAll),
+          _.each(_.each($.addClass('fade-in')))
+        )
+      }
+    )
+    
     _.go(
       Images.fetch(),
       Images.tmpl,
       $.el,
       $.append($.qs('#test')),
-      _.tap(
-        $.findAll('img'),
-        L.map(img => _ => new Promise(resolve => {
-          img.onload = () => resolve(img);
-          img.src = img.getAttribute('lazy-src');
-        })),
-        lazy => {
-          let r = L.range(Infinity);
-          return _.go(
-            lazy,
-            _.groupBy(_ => Math.floor(r.next().value / 4)),
-            L.values,
-            L.map(L.map(f => f())),
-            L.map(C.takeAll),
-            _.each(_.each($.addClass('fade-in')))
-          )
-        }
-        // C.takeAll,
-        // _.each($.addClass('fade-in'))
-      ),
+      Images.loader(4),
       $.findAll('.remove'),
       $.on('click', async ({currentTarget:ct}) => {
         if(await Ui.confirm('정말 삭제하시겠습니까?')) {
